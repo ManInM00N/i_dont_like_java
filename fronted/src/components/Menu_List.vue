@@ -37,7 +37,7 @@
     </el-menu>
 
   </el-header>
-  <el-main class="forall">
+  <el-container class="forall">
     <router-view v-slot="{ Component,route }">
 
       <keep-alive v-if="route.meta.keepAlive ">
@@ -53,7 +53,7 @@
       <p >个人学号：2200303310 姓名：陈忠鹏 班级：22计算机3 </p>
       <p >联系方式：15757285081 QQ:571404393</p>
     </el-footer>
-  </el-main>
+  </el-container>
 </template>
 
 <script setup>

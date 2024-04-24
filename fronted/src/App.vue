@@ -1,6 +1,6 @@
 <template >
 
-  <el-container class="Main" style="margin: 0px 0px 0px 0px" v-loading.fullscreen.lock="load">
+  <el-main class="Main" style="margin: 0px 0px 0px 0px" v-loading.fullscreen.lock="load">
     <el-header>
 <!--      <div class="School">-->
         <p align="center"><img src="./assets/images/xh.png" alt="">中国计量大学-Web前端设计与开发</p>
@@ -8,7 +8,7 @@
     </el-header>
       <Menu_List/>
 
-  </el-container>
+  </el-main>
 
 </template>
 

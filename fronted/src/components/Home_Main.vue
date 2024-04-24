@@ -1,6 +1,7 @@
 <template>
-  <el-main
+  <el-container
     class="middle_problem"
+    style="align:center"
   >
     <section id="tip">
     <div  class="information" >
@@ -68,7 +69,7 @@
       </el-row>
     </div>
     </section>
-  </el-main>
+  </el-container>
 
 </template>
 
@@ -120,7 +121,9 @@
 }
 .middle_problem #tip{
   //color: azure;
+  display: block;
   border: none;
   font-size: 12px;
 }
+
 </style>
