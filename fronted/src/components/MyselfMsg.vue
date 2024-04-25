@@ -1,7 +1,8 @@
 <template>
   <section class="middle_title" >
-    <h1 style="margin: auto; text-align: center; margin-top: 5%;font-size: 30px;">个人介绍</h1>
+    <h1 style=" margin: auto; text-align: center; margin-top: 10px;font-size: 30px;">个人介绍</h1>
   </section>
+  <section class="extitile">
   <section class="outside">
     <div class="rectangle-container" >
       <p> 现在在你面前的是 </p>
@@ -38,7 +39,7 @@
         <img src="../assets/images/nt2.gif">
       </div>
     </div>
-
+  </section>
   </section>
 </template>
 
@@ -47,15 +48,24 @@
 </script>
 
 <style lang = 'less' scoped>
+
+.middle_title{
+  align-items: center;
+  height: 30px;
+}
+.extitile{
+  margin-top: 20px;
+  height :calc(100% - 60px)
+}
 .outside {
   border-radius: 30px;
   width: 750px;
-  height: 650px;
+  height: 680px;
   overflow: hidden;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10%;
-  margin-bottom:20%;
+  margin-top: 0;
+  margin-bottom:0;
 
 
 }

@@ -13,9 +13,15 @@ func main() {
 			"error":  "404, page not exists!",
 		})
 	})
-	Users := r.Group("/user"){
-		Users.GET("/")
-	}
-
+	//Users := r.Group("/user"){
+	//}
+	vis := 0
+	r.GET("/", func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		vis++
+		c.JSON(200, gin.H{
+			"num": vis,
+		})
+	})
 	r.Run(":7234")
 }

@@ -37,36 +37,49 @@
     </el-menu>
 
   </el-header>
-  <el-container class="forall">
-    <router-view v-slot="{ Component,route }">
+  <section class="forall">
+    <section style="height:90%">
 
-      <keep-alive v-if="route.meta.keepAlive ">
-        <component
-            :is="Component"
-        />
-      </keep-alive>
-      <component v-else :is="Component" class="forall"/>
-    </router-view>
-    <el-divider/>
-    <el-backtop :right="100" :bottom="100" :visibility-height="200" />
-    <el-footer align="center">
-      <p >个人学号：2200303310 姓名：陈忠鹏 班级：22计算机3 </p>
+      <router-view v-slot="{ Component,route }">
+
+        <keep-alive v-if="route.meta.keepAlive ">
+          <component
+              :is="Component"
+          />
+        </keep-alive>
+        <component v-else :is="Component" class="forall"/>
+      </router-view>
+    </section>
+    <el-divider style="margin-top: 5px;margin-bottom: 5px"/>
+<!--    <el-backtop :right="100" :bottom="100" :visibility-height="200" />-->
+    <el-container class="footer" align="center"  >
+      <p >个人学号：2200303310 姓名：陈忠鹏 班级：22计算机3      <br>
+      </p>
       <p >联系方式：15757285081 QQ:571404393</p>
-    </el-footer>
-  </el-container>
+      <p>你是今天第{{num}}个访客</p>
+    </el-container>
+  </section>
 </template>
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
-import {defineComponent,  ref} from "vue";
-// import router
+import {defineComponent, onMounted, ref} from "vue";
+import axios from "axios"
+const num = ref(0)
 const items = ref([
   {id : 1, iconmsg : "HomeFilled",key:"Search",index:"/"},
   {id : 2, iconmsg : "UserFilled",key:"Login_in",index:"/login_in"},
   {id : 3, iconmsg:"Avatar",key:"MyselfMsg",index:"/MyselfMsg"},
-  {id:4,iconmsg: "User",key:""}
+  {id:4,iconmsg: "User",key:"User",index:"/User"},
 
 ])
+onMounted(()=>{
+    axios.get("http://192.168.216.244:7234/").then(response=>(
+        num.value=response.data.num
+    ))
+
+});
+
 // eslint-disable-next-line no-unused-vars
 const activeIndex = ref('/')
 
@@ -86,7 +99,12 @@ function  handleMenuSelect(index) {
 .forall{
   height:100%;
 }
-
-
+/deep/
+.footer{
+  align-items: center;float:left;width:100%;height:10%;
+  &p{
+    margin: 0 0 0 0;
+  }
+}
 
 </style>
