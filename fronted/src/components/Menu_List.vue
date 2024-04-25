@@ -18,6 +18,7 @@
           :id="item.id"
           :index="idx+''"
           :route="item.index"
+          :title="item.key"
           class="menu_item"
           @select="handleMenuSelect"
       >
@@ -52,31 +53,33 @@
     </section>
     <el-divider style="margin-top: 5px;margin-bottom: 5px"/>
 <!--    <el-backtop :right="100" :bottom="100" :visibility-height="200" />-->
-    <el-container class="footer" align="center"  >
-      <p >个人学号：2200303310 姓名：陈忠鹏 班级：22计算机3      <br>
-      </p>
-      <p >联系方式：15757285081 QQ:571404393</p>
+    <div style="clear: both"></div>
+    <section class="footer" align="center"  >
+      <p >个人学号：2200303310 姓名：李瑟钰 班级：22计算机3</p>
+      <p >联系方式： QQ:571404393</p>
       <p>你是今天第{{num}}个访客</p>
-    </el-container>
+    </section>
   </section>
 </template>
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
 import {defineComponent, onMounted, ref} from "vue";
+// eslint-disable-next-line no-unused-vars
 import axios from "axios"
 const num = ref(0)
 const items = ref([
-  {id : 1, iconmsg : "HomeFilled",key:"Search",index:"/"},
-  {id : 2, iconmsg : "UserFilled",key:"Login_in",index:"/login_in"},
-  {id : 3, iconmsg:"Avatar",key:"MyselfMsg",index:"/MyselfMsg"},
+  {id : 1, iconmsg : "HomeFilled",key:"Home",index:"/"},
+  {id : 2, iconmsg : "ChatDotRound",key:"CommentBoard",index:"/CommentBoard"},
+  {id : 3, iconmsg:"Avatar",key:"Myself",index:"/MyselfMsg"},
   {id:4,iconmsg: "User",key:"User",index:"/User"},
-
+  {id:5,iconmsg: "Promotion",key:"HomeTown",index:"/HomeTown"},
+  {id:6,iconmsg: "User",key:"Sign in",index:"/login_in"}
 ])
 onMounted(()=>{
-    axios.get("http://192.168.216.244:7234/").then(response=>(
-        num.value=response.data.num
-    ))
+    // axios.get("http://192.168.216.244:7234/").then(response=>(
+    //     num.value=response.data.num
+    // ))
 
 });
 
@@ -98,10 +101,11 @@ function  handleMenuSelect(index) {
 /*@import "src/assets/style/menu.less";*/
 .forall{
   height:100%;
+  margin-bottom: 0;
 }
 /deep/
 .footer{
-  align-items: center;float:left;width:100%;height:10%;
+  align-items: center;float:left;width:100%;
   &p{
     margin: 0 0 0 0;
   }

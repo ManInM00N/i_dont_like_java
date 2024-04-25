@@ -49,10 +49,7 @@
 
 <style lang = 'less' scoped>
 
-.middle_title{
-  align-items: center;
-  height: 30px;
-}
+
 .extitile{
   margin-top: 20px;
   height :calc(100% - 60px)
@@ -110,5 +107,5 @@
   background-image: url("../assets/images/bb1.jpg");
   /* border-radius: 30px; */
 }
-
+@import "../assets/style/variable";
 </style>

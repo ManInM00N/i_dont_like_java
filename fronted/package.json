@@ -1,10 +1,10 @@
-{
+  {
   "name": "fronted",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve --port=7235",
+    "build": "vue-cli-service build --port=7235 ",
     "lint": "vue-cli-service lint",
     "dev": "node index.js"
   },

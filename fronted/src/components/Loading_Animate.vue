@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import  "../assets/js/load.js"
+import  "../assets/js/signup.js"
 </script>
 
 <style lang="less" scoped>
