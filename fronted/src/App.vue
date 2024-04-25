@@ -15,12 +15,14 @@
 <script setup>
 import Menu_List from "./components/Menu_List.vue"
 import {ref} from "vue";
+import axios from 'axios';
 const load = ref(true);
+const num = ref(0);
 function  done(){
   load.value=false;
 }
 window.addEventListener('load',done)
-
+axios.get("http://127.0.0.1:7234/")
 
 </script>
 
