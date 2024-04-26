@@ -1,13 +1,14 @@
 <template>
   <el-header
-    style="background: transparent"
+    style="background: transparent;text-align:center"
+    class=""
   >
 
     <el-menu
         :default-active="$route.path"
         class="vertical-menu"
         mode="vertical"
-        style="background-color: rgba(255,255,255,0.2)"
+        style="background-color: rgba(255,255,255,0.2);"
         :router="true"
     >
     <el-container class="top-items" >
@@ -98,7 +99,7 @@ function  handleMenuSelect(index) {
 <style lang="less" scoped>
 
 @import "src/assets/style/Color.less";
-/*@import "src/assets/style/menu.less";*/
+@import "src/assets/style/menu.less";
 .forall{
   height:100%;
   margin-bottom: 0;
@@ -110,5 +111,6 @@ function  handleMenuSelect(index) {
     margin: 0 0 0 0;
   }
 }
+
 
 </style>

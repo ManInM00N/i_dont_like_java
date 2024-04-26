@@ -6,11 +6,11 @@
         <br>
         <!--                                <br>-->
         <div class ="input_box">
-          <input type="text" name="username" id="username" placeholder="请输入用户名">
+          <el-input type="text" name="username" id="username" v-model="account" placeholder="请输入用户名"/>
         </div>
         <br>
         <div class ="input_box">
-          <input type="password" name="password" id="password" placeholder="请输入密码">
+          <el-input type="password" name="password" id="password" v-model="password" placeholder="请输入密码"/>
         </div>
         <br>
         <button>登录</button><br>
@@ -22,7 +22,10 @@
 
 
 <script setup>
+import {ref} from "vue";
 
+const account = ref('')
+const password = ref('')
 // function ifnull(txt){
 //   if(txt.length==0){
 //     return true;

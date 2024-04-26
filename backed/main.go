@@ -5,8 +5,10 @@ import (
 	"net/http"
 )
 
+var r *gin.Engine
+
 func main() {
-	r := gin.Default()
+	r = gin.Default()
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"status": 404,
@@ -15,6 +17,7 @@ func main() {
 	})
 	//Users := r.Group("/user"){
 	//}
+
 	vis := 0
 	r.GET("/", func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
