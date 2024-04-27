@@ -25,8 +25,8 @@
         <h1 align="center" style="font-size:26px">家乡美食</h1>
       </div>
       <section>
-        <el-carousel :interval="4000" type="card" height="300px" @change="cg1">
-          <el-carousel-item v-for="(item,idx) in images" :key="idx" :label="item.alt" >
+        <el-carousel :interval="4000" type="card" height="300px"   @change="cg1">
+          <el-carousel-item v-for="(item,idx) in images" :key="idx" :label="item.alt"  >
             <el-image :src="item.URL"></el-image>
           </el-carousel-item>
         </el-carousel>
