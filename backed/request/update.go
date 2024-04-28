@@ -9,6 +9,9 @@ func update(c *gin.Context) {
 		Name:             data["name"].(string),
 		SelfIntroduction: data["selfIntroduction"].(string),
 	}
-	db.Model(Message{Name: msg.Name}).Updates(msg)
+	newone := Message{}
+	db.Model(&Message{}).First(&newone, msg.Name)
+	newone = msg
+	db.Save(&newone)
 
 }

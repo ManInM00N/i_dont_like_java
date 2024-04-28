@@ -78,9 +78,13 @@ const items = ref([
   {id:6,iconmsg: "User",key:"Sign in",index:"/login_in"}
 ])
 onMounted(()=>{
-    // axios.get("http://192.168.216.244:7234/").then(response=>(
-    //     num.value=response.data.num
-    // ))
+    axios.get("/apis/").then(response=>(
+        num.value=response.data.num
+    )).then(response=>{
+      console.log(response)
+    }).catch(error=>{
+      console.log(error)
+    })
 
 });
 

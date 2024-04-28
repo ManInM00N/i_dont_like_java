@@ -4,12 +4,12 @@
       <div id="box2">
 
         <h2 style="color: #fffefe">Register</h2>
-        <el-form :rules="rules" :model="form" label-position="left"   label-width="140px" target="sendcode" @onsubmit="TryRegister">
+        <el-form :rules="rules" :model="form" label-position="left"   label-width="140px" target="sendcode" >
           <el-form-item label="Username" prop="name">
             <el-input v-model="form.name"  placeholder="请输入用户名"  />
           </el-form-item>
           <el-form-item label="password" prop="password">
-              <el-input minlength="20" v-model="form.password" type="password" placeholder="请输入密码"/>
+              <el-input  v-model="form.password" type="password" placeholder="请输入密码"/>
           </el-form-item>
           <el-form-item label="password again"  prop="againpassword" >
             <el-input v-model="form.again_password" type="password" placeholder="再次输入密码"/>
@@ -29,7 +29,7 @@
             </el-input>
 
           </el-form-item>
-          <button  >注册</button><br>
+          <button @click="TryRegister" >注册</button><br>
         </el-form>
         <br>
         <p id="switch">拥有账号？<a href="#/login_in" style="color:deeppink" >登录</a> </p>
@@ -59,7 +59,7 @@ const rules = ref({
     { required: true, trigger: 'blur' ,pattern: /[a-zA-Z0-9]{4,20}/, message: '名称只能由英文字母数字及下划线组成,且长度为4-20个字符'}
   ],
   password:[
-    {required: true, trigger: 'blur' ,pattern: /[a-zA-Z]{6,30}/,message:"密码只能由英文字母和数字下划线组成，长度在6-30之间",}
+    {required: true, trigger: 'blur' ,pattern: /[a-zA-Z0-9]{6,30}/,message:"密码只能由英文字母和数字下划线组成，长度在6-30之间",}
   ],
   againpassword:[
     {required: true, trigger: 'blur' ,validator: checksame,}
@@ -92,7 +92,7 @@ function sendCode() {
   console.log(form.email)
   axios.post("/apis/api/register/sendcode",{
     txt: 'test',
-    emal:form.email,
+    email:form.email,
   }, {
     headers: {
       'Content-Type': 'application/json'
@@ -106,12 +106,12 @@ function sendCode() {
   startCountdown();
 }
 function TryRegister(){
-  axios.post(" http://localhost:7234/register",{
-    'name':form.name,
-    'password':form.password,
-    'email':form.email,
-    'again_password':form.again_password,
-    'code':incode.value,
+  axios.post("/apis/api/register",{
+    name:form.name,
+    password:form.password,
+    email:form.email,
+    againpassword:form.again_password,
+    code:incode.value,
   },{
     headers:{
       'Content-Type':'application/json'

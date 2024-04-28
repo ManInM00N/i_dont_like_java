@@ -18,7 +18,7 @@ const (
 	userName = "3141529546@qq.com"
 	password = "vndnorjmcosidfba"
 	message  = `
-		<p>Hello.</p>
+		<p>Hello</p>
 			<p>这封信是由 ManInM00N 发送的。<p>
 			<p>您收到这封信，意味着您将使用您的邮箱进行账号注册<p>
 			<h2> 这是您的验证码 %s ,有效期为5分钟 <h2>

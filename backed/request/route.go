@@ -5,6 +5,7 @@ import (
 	"log"
 	. "main/binary"
 	"net/http"
+	"os"
 )
 
 var R *gin.Engine
@@ -29,6 +30,8 @@ func Cors() gin.HandlerFunc {
 }
 
 func ServeInit() {
+	gin.SetMode(gin.ReleaseMode)
+	gin.ForceConsoleColor()
 	R = gin.Default()
 
 	R.NoRoute(func(c *gin.Context) {
@@ -40,7 +43,7 @@ func ServeInit() {
 	//Users := r.Group("/user"){
 	//}
 
-	vis := 0
+	vis := 1
 	R.GET("/", func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		vis++
@@ -50,25 +53,27 @@ func ServeInit() {
 	})
 	Api := R.Group("/api")
 	Api.POST("/register/sendcode", func(c *gin.Context) {
-
 		data := make(map[string]interface{})
 		log.Println(2)
 		c.BindJSON(&data)
 		log.Println(data)
+		//println(data["xx"].([]string))
 		c.JSON(200, gin.H{})
 		if data["email"] != nil {
 			SendOut(data["email"].(string))
 		}
 	})
-	Api.POST("/register", func(c *gin.Context) {
-		data := make(map[string]interface{})
-		log.Println()
-		log.Println(1)
-		c.BindJSON(&data)
-	})
+	Api.POST("/login", Login)
+	Api.POST("/update", update)
+	Api.POST("/register", Register)
 	Users := R.Group("/user")
 	account := Account{}
-	row, err := db.Table(account.TableName()).Select("Name").Rows()
+	//D := db.Model(&Account{})
+	row, err := db.Model(&Account{}).Select("Name").Rows()
+	if err != nil {
+		log.Fatalln(err)
+		os.Exit(16)
+	}
 	for row.Next() {
 		var ss string
 		err = row.Scan(&ss)
@@ -84,7 +89,8 @@ func ServeInit() {
 			db.Table(account.TableName()).Where("Account = ?", ss).First(&msg)
 
 		})
-		//Users.POST("/"+ss, Updatee)
+
 	}
+
 	R.Use(Cors())
 }
