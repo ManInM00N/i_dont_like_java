@@ -37,8 +37,9 @@ func (w *FyneLogWriter) Write(p []byte) (n int, err error) {
 
 func main() {
 	LogInit()
+	DBInit()
+	ServeInit()
 	windows_init()
-
 	defer F.Close()
 	go func() {
 		R.Run(":7234")

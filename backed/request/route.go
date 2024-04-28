@@ -28,7 +28,7 @@ func Cors() gin.HandlerFunc {
 	}
 }
 
-func init() {
+func ServeInit() {
 	R = gin.Default()
 
 	R.NoRoute(func(c *gin.Context) {
@@ -62,9 +62,29 @@ func init() {
 	})
 	Api.POST("/register", func(c *gin.Context) {
 		data := make(map[string]interface{})
-		log.Println(c.JSON)
+		log.Println()
 		log.Println(1)
 		c.BindJSON(&data)
 	})
+	Users := R.Group("/user")
+	account := Account{}
+	row, err := db.Table(account.TableName()).Select("Name").Rows()
+	for row.Next() {
+		var ss string
+		err = row.Scan(&ss)
+		if err != nil {
+			log.Fatalln("failed to get message", err)
+		}
+		Users.GET("/"+ss, func(c *gin.Context) {
+			//if !reloadtime.Stop() {
+			//	<-reloadtime.C
+			//}
+			//reloadtime.Reset(time.Duration(portmsg.Killtime) * time.Minute)
+			var msg Message
+			db.Table(account.TableName()).Where("Account = ?", ss).First(&msg)
+
+		})
+		//Users.POST("/"+ss, Updatee)
+	}
 	R.Use(Cors())
 }

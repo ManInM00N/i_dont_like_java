@@ -50,7 +50,7 @@ const form = reactive({
   password:'',
   again_password:'',
   email:'',
-
+  code:'',
 
     }
 )
@@ -87,6 +87,8 @@ function sendCode() {
   if (countdown.value > 0 || issend.value|| !reg.test(form.email) ) {
     return;
   }
+  issend.value = true;
+
   console.log(form.email)
   axios.post("/apis/api/register/sendcode",{
     txt: 'test',
@@ -97,18 +99,28 @@ function sendCode() {
     }
   }).then(response=>{
     console.log(response)
+    issend.value = false;
   }).catch(error=>{
     console.log(error)
   })
-  issend.value = true;
   startCountdown();
-  setTimeout(() => {
-    // 假设发送成功后将isSending重置为false
-    issend.value= false;
-  }, 2000); // 这里使用2秒的延迟来模拟发送过程，你需要替换为实际的发送逻辑
 }
 function TryRegister(){
-  // axios.post(" http://10.5.51.9:7235/register",form)
+  axios.post(" http://localhost:7234/register",{
+    'name':form.name,
+    'password':form.password,
+    'email':form.email,
+    'again_password':form.again_password,
+    'code':incode.value,
+  },{
+    headers:{
+      'Content-Type':'application/json'
+    }
+  }).then((response)=>{
+    console.log(response)
+  }).catch((error)=>{
+    console.log(error)
+  })
 }
 </script>
 
