@@ -2,10 +2,8 @@ package request
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
 	. "main/binary"
 	"net/http"
-	"os"
 )
 
 var R *gin.Engine
@@ -54,10 +52,7 @@ func ServeInit() {
 	Api := R.Group("/api")
 	Api.POST("/register/sendcode", func(c *gin.Context) {
 		data := make(map[string]interface{})
-		log.Println(2)
 		c.BindJSON(&data)
-		log.Println(data)
-		//println(data["xx"].([]string))
 		c.JSON(200, gin.H{})
 		if data["email"] != nil {
 			SendOut(data["email"].(string))
@@ -67,30 +62,34 @@ func ServeInit() {
 	Api.POST("/update", update)
 	Api.POST("/register", Register)
 	Users := R.Group("/user")
-	account := Account{}
+	Users.GET("/:id", func(c *gin.Context) {
+		//tokenString := c.GetHeader("Authorization")
+		//log.Println(c.)
+		c.JSON(200, gin.H{})
+	})
+	Users.Use(AuthMiddleware())
 	//D := db.Model(&Account{})
-	row, err := db.Model(&Account{}).Select("Name").Rows()
-	if err != nil {
-		log.Fatalln(err)
-		os.Exit(16)
-	}
-	for row.Next() {
-		var ss string
-		err = row.Scan(&ss)
-		if err != nil {
-			log.Fatalln("failed to get message", err)
-		}
-		Users.GET("/"+ss, func(c *gin.Context) {
-			//if !reloadtime.Stop() {
-			//	<-reloadtime.C
-			//}
-			//reloadtime.Reset(time.Duration(portmsg.Killtime) * time.Minute)
-			var msg Message
-			db.Table(account.TableName()).Where("Account = ?", ss).First(&msg)
-
-		})
-
-	}
+	//row, err := db.Model(&Account{}).Select("Name").Rows()
+	//if err != nil {
+	//	log.Fatalln(err)
+	//	os.Exit(16)
+	//}
+	//for row.Next() {
+	//	var ss string
+	//	err = row.Scan(&ss)
+	//	if err != nil {
+	//		log.Fatalln("failed to get message", err)
+	//	}
+	//	Users.GET("/"+ss, func(c *gin.Context) {
+	//		//if !reloadtime.Stop() {
+	//		//	<-reloadtime.C
+	//		//}
+	//		//reloadtime.Reset(time.Duration(portmsg.Killtime) * time.Minute)
+	//		var msg Message
+	//		db.Table(account.TableName()).Where("Account = ?", ss).First(&msg)
+	//
+	//	})
+	//}
 
 	R.Use(Cors())
 }

@@ -44,6 +44,7 @@ import {reactive, ref} from "vue";
 import  checksame from "../assets/js/signup.js";
 // eslint-disable-next-line no-unused-vars
 import axios from "axios";
+import router from "@/router";
 // import api from "../api/request.js"
 const form = reactive({
   name : '',
@@ -118,6 +119,12 @@ function TryRegister(){
     }
   }).then((response)=>{
     console.log(response)
+    if (response.status===200){
+      console.log("goto",form.name)
+      router.push({path:"/user",params:{
+          id:form.name
+        }})
+    }
   }).catch((error)=>{
     console.log(error)
   })

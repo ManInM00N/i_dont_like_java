@@ -78,10 +78,9 @@ const items = ref([
   {id:6,iconmsg: "User",key:"Sign in",index:"/login_in"}
 ])
 onMounted(()=>{
-    axios.get("/apis/").then(response=>(
-        num.value=response.data.num
-    )).then(response=>{
+    axios.get("/apis/").then(response=>{
       console.log(response)
+      num.value=response.data.num
     }).catch(error=>{
       console.log(error)
     })

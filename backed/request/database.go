@@ -22,7 +22,7 @@ const (
 
 type Account struct {
 	gorm.Model
-	Name     string `gorm:"varchar(20);not null;primary key" json:"name" binding:"required"`
+	Name     string `gorm:"varchar(20);not null;primarykey" json:"name" binding:"required"`
 	Password string `gorm:"size:255;not null" json:"password" binding:"required"`
 	Email    string `gorm:"varchar(60);not null" json:"email" binding:"required"`
 }
@@ -33,8 +33,13 @@ func (a *Account) TableName() string {
 
 type Message struct {
 	gorm.Model
-	Name             string `gorm:"type:varchar(20);not null;primary key" json:"name" binding:"required"`
-	SelfIntroduction string `gorm:"type:varchar(400);not null" json:"selfIntroduction" `
+	Name             string `gorm:"type:varchar(20);not null;primarykey" json:"name" binding:"required"`
+	SelfIntroduction string `gorm:"type:varchar(400);not null" json:"selfIntroduction" default:"无"`
+	Motto            string `gorm:"type:varchar(100);not null" json:"motto" default:"无"`
+	Interest         string `gorm:"type:varchar(100);not null" json:"interest" default:"无"`
+	Group            string `gorm:"type:varchar(100);not null " json:"group" default:"无"`
+	Awards           string `gorm:"type:varchar(300);not null" json:"awards" default:"无"`
+	Xueli            string `gorm:"type:varchar(50);not null" json:"xueli" default:"无"`
 }
 
 func (a *Message) TableName() string {

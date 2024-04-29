@@ -5,6 +5,7 @@ import MyselfMsg from "../components/MyselfMsg"
 import HomeTown from "../components/HomeTown.vue";
 import CommentBoard from "@/components/CommentBoard.vue";
 import sign_up from "@/components/sign_up.vue";
+import UserMsg from "@/components/UserMsg.vue";
 const router = createRouter({
     history: createWebHashHistory(),
     routes:[
@@ -56,7 +57,15 @@ const router = createRouter({
                 keepAlive :false,
                 refresh: true,
             }
+        },{
+            path:'/user/:id' ,
+            component : UserMsg,
+            meta:{
+                keepAlive :true,
+                refresh: true,
+            }
         }
+
 
 
 

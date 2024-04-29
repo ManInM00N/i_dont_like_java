@@ -20,13 +20,32 @@
 
 
 <script setup>
-import {ref} from "vue";
-const form = ref({
+// eslint-disable-next-line no-unused-vars
+import {reactive, ref} from "vue";
+import router from "@/router";
+import axios from "axios";
+const form = reactive({
     account: "",
     password:"",
 })
 function subform(){
-  
+    axios.get("/apis/login",{
+      name:form.account,
+      password:form.password,
+    },{
+      headers:{
+        'Content-Type':'application/json'
+      }
+    }).then((response)=>{
+      console.log(response)
+      if (response.status===200){
+        localStorage.clear()
+        localStorage.setItem("")
+        router.push("/user/"+form.name)
+      }
+    }).catch((error)=>{
+      console.log(error)
+    })
 }
 
 

@@ -19,6 +19,17 @@ app.use(ElementPlus)
 app.use(V3waterfall)
 // app.provide("$axios",axios)
 app.mount('#app')
+axios.interceptors.request.use(
+    config=>{
+            let accessToken = localStorage.getItem('accessToken');
+            if (accessToken && accessToken !== '') {
+                config.headers.common['Authorization'] = accessToken;
+            }
+            // 设置token end
+            return config;
+    },
+    error => Promise.reject(error)
+)
 app.config.globalProperties.$http = axios
 
 

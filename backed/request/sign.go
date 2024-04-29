@@ -50,7 +50,9 @@ func Login(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/login")
 		return
 	}
-	c.Redirect(http.StatusFound, "/user/")
+	//c.SetCookie(is.Name)
+
+	c.Redirect(http.StatusFound, "/user/"+is.Name)
 }
 func Register(c *gin.Context) {
 	var data *Register_Msg
@@ -101,6 +103,10 @@ func Register(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/register")
 		return
 	}
+	//hash1 := securecookie.GenerateRandomKey(64)
+	//hash2 := securecookie.GenerateRandomKey(32)
+	//val := securecookie.New(hash1, hash2)
+
 	newuer := Account{
 		Name:     data.Name,
 		Password: string(hashedPassword),
@@ -113,5 +119,5 @@ func Register(c *gin.Context) {
 	}
 	db.Create(&newMsg)
 	c.JSON(http.StatusOK, gin.H{})
-	c.Redirect(http.StatusFound, "/user/"+data.Name)
+	//c.Redirect(http.StatusFound, "/user/"+data.Name)
 }

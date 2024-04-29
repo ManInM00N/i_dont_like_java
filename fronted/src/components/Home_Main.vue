@@ -77,7 +77,7 @@
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .information {
 
   width: 650px;
