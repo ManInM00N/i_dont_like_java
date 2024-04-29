@@ -95,8 +95,6 @@ func AuthMiddleware() gin.HandlerFunc {
 				},
 			})
 		}
-
-		//用户存在 将user信息写入上下文
 		c.Set("user", user)
 		c.Next()
 	}

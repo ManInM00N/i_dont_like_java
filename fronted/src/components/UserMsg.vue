@@ -29,31 +29,31 @@
         <el-row>
           <el-col :span="6"><div></div></el-col>
           <el-col :span="6"><div >求学经历：</div> </el-col>
-          <el-col :span="6"><div >{{form.xueli}}</div> </el-col>
+          <el-col :span="6"><el-input v-model="form.xueli" ></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
           <el-col :span="6"><div >获奖经历：</div> </el-col>
-          <el-col :span="6"><div >{{form.awards}}</div> </el-col>
+          <el-col :span="6"><el-input el-input v-model="form.awards"> </el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
           <el-col :span="6"><div >参与社团：</div> </el-col>
-          <el-col :span="6"><div >{{form.group}}</div> </el-col>
+          <el-col :span="6"><el-input v-model="form.group"></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
           <el-col :span="6"><div >兴趣爱好：</div> </el-col>
-          <el-col :span="6"><div >{{form.interest}}</div> </el-col>
+          <el-col :span="6"><el-input v-model="form.interest" ></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
           <el-col :span="6"><div >座右铭：</div> </el-col>
-          <el-col :span="6"><div >{{form.motto}}</div> </el-col>
+          <el-col :span="6"><el-input v-model="form.motto"></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row >
       </div>
@@ -63,6 +63,7 @@
 <script setup>
 import {reactive} from "vue";
 import axios from "axios";
+import router from "@/router";
 const form = reactive({
   name:'',
   xueli:'',
@@ -86,6 +87,28 @@ function init(){
     console.log(error)
   })
 }
+function update(){
+  axios.post("/apis/api/update",{
+    name:form.name,
+    xueli:form.xueli,
+    interest:form.interest,
+    motto:form.motto,
+    group:form.group,
+    awards:form.awards,
+  },{
+    headers:{
+      'Content-Type':'application/json'
+    }
+  }).then((response)=>{
+    console.log(response)
+    if (response.status===200){
+      console.log("goto",form.name)
+    }
+  }).catch((error)=>{
+    console.log(error)
+  })
+}
+
 init()
 
 </script>

@@ -114,8 +114,7 @@ func Register(c *gin.Context) {
 	}
 	db.Create(&newuer)
 	newMsg := Message{
-		Name:             data.Name,
-		SelfIntroduction: "",
+		Name: data.Name,
 	}
 	db.Create(&newMsg)
 	c.JSON(http.StatusOK, gin.H{})
