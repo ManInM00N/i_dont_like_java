@@ -56,6 +56,15 @@
           <el-col :span="6"><el-input v-model="form.motto"></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row >
+        <el-row>
+          <el-col :span="8"><div ></div></el-col>
+          <el-col :span="3"> </el-col>
+          <el-col :span="2"><el-button @click="update" color="#626aef" :dark="true" plain>修改信息</el-button> </el-col>
+
+          <el-col :span="3"> </el-col>
+
+          <el-col :span="8"> </el-col>
+        </el-row>
       </div>
     </section>
   </el-container>
@@ -63,7 +72,9 @@
 <script setup>
 import {reactive} from "vue";
 import axios from "axios";
-import router from "@/router";
+// eslint-disable-next-line no-unused-vars
+import {useRoute} from "vue-router";
+const route = useRoute()
 const form = reactive({
   name:'',
   xueli:'',
@@ -74,12 +85,12 @@ const form = reactive({
 
 })
 function init(){
-  form.name = this.$route.params.id
-  axios.get("/apis/").then(response=>{
+  form.name = route.params.id
+  axios.get("/apis/user/"+form.name).then(response=>{
     console.log(response)
     form.name = response.data.name
     form.awards = response.data.awards
-    form.group = response.data.awards
+    form.group = response.data.groups
     form.motto = response.data.motto
     form.xueli = response.data.xueli
     form.interest= response.data.interest

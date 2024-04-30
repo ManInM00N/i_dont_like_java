@@ -31,28 +31,20 @@ func Login(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/login")
 		return
 	}
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data["password"].(string)), bcrypt.DefaultCost)
-	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"code":    500,
-			"message": "密码加密错误",
-		})
-		c.Redirect(http.StatusFound, "/login")
-		return
-	}
 	var is Account
-	db.Model(&Account{}).First(is, data["name"].(string))
-	if is.Password != string(hashedPassword) {
+	is.Name = data["name"].(string)
+	db.First(&is)
+	isPassword := bcrypt.CompareHashAndPassword([]byte(is.Password), []byte(data["password"].(string)))
+	if isPassword != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"code":    500,
 			"message": "账号或密码错误",
 		})
-		c.Redirect(http.StatusFound, "/login")
 		return
 	}
 	//c.SetCookie(is.Name)
-
-	c.Redirect(http.StatusFound, "/user/"+is.Name)
+	c.JSON(http.StatusOK, gin.H{})
+	//c.Redirect(http.StatusOK, "/user/"+is.Name)
 }
 func Register(c *gin.Context) {
 	var data *Register_Msg
@@ -117,6 +109,14 @@ func Register(c *gin.Context) {
 		Name: data.Name,
 	}
 	db.Create(&newMsg)
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, gin.H{
+		"name":     newMsg.Name,
+		"motto":    newMsg.Motto,
+		"interest": newMsg.Interest,
+		"xueli":    newMsg.Xueli,
+		"awards":   newMsg.Awards,
+		"groups":   newMsg.Group,
+	})
+	//c.Param()
 	//c.Redirect(http.StatusFound, "/user/"+data.Name)
 }

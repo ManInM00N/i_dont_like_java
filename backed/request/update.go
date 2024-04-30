@@ -8,8 +8,9 @@ func update(c *gin.Context) {
 	var msg Message
 	c.BindJSON(&msg)
 
-	newone := Message{}
-	db.Model(&Message{}).First(&newone, msg.Name)
+	newone := Message{Name: msg.Name}
+
+	db.First(&newone)
 	newone.Group = msg.Group
 	newone.Interest = msg.Interest
 	newone.Motto = msg.Motto

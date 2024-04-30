@@ -2,14 +2,14 @@
   <div class = "frame">
       <div id ="box">
         <h2 style="color: #fffefe">Login</h2>
-        <el-form v-model="form" @onsubmit="subform" label-position="left"   label-width="120px" target="sendcode">
+        <el-form v-model="form"  label-position="left"   label-width="120px" target="sendcode">
         <el-form-item label="Username" class ="input_box">
           <el-input type="text"  v-model="form.account" placeholder="请输入用户名"/>
         </el-form-item>
         <el-form-item label="password" class ="input_box">
-          <el-input type="password" name="password" id="password" v-model="password" placeholder="请输入密码"/>
+          <el-input type="password" name="password" id="password" v-model="form.password" placeholder="请输入密码" show-password="true"/>
         </el-form-item>
-        <button>登录</button><br>
+        <button @click="subform">登录</button><br>
         <p id="switch">没有账号？<a href="#/sign_up" style="color:deeppink" >注册</a> </p>
         </el-form>
         <iframe width=0 height=0 frameborder=0 name="sendcode"></iframe>
@@ -29,7 +29,7 @@ const form = reactive({
     password:"",
 })
 function subform(){
-    axios.get("/apis/login",{
+    axios.post("/apis/api/login",{
       name:form.account,
       password:form.password,
     },{
@@ -40,8 +40,8 @@ function subform(){
       console.log(response)
       if (response.status===200){
         localStorage.clear()
-        localStorage.setItem("")
-        router.push("/user/"+form.name)
+        // localStorage.setItem("")
+        router.push("/user/"+form.account)
       }
     }).catch((error)=>{
       console.log(error)

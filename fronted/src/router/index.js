@@ -14,7 +14,7 @@ const router = createRouter({
             component: Home_Main,
             meta :{
                 keepAlive :false,
-                refresh: false
+                refresh: true
             },
 
         },
@@ -23,7 +23,7 @@ const router = createRouter({
             component: login_in,
             meta :{
                 keepAlive :false,
-                refresh: false
+                refresh: true
             },
 
         },
@@ -32,7 +32,7 @@ const router = createRouter({
             component: MyselfMsg,
             meta:{
                 keepAlive :false,
-                refresh: false
+                refresh: true
             }
         },
         {

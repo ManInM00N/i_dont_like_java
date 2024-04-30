@@ -2,6 +2,7 @@ package request
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	. "main/binary"
 	"net/http"
 )
@@ -32,12 +33,12 @@ func ServeInit() {
 	gin.ForceConsoleColor()
 	R = gin.Default()
 
-	R.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status": 404,
-			"error":  "404, page not exists!",
-		})
-	})
+	//R.NoRoute(func(c *gin.Context) {
+	//	c.JSON(http.StatusNotFound, gin.H{
+	//		"status": 404,
+	//		"error":  "404, page not exists!",
+	//	})
+	//})
 	//Users := r.Group("/user"){
 	//}
 
@@ -64,8 +65,20 @@ func ServeInit() {
 	Users := R.Group("/user")
 	Users.GET("/:id", func(c *gin.Context) {
 		//tokenString := c.GetHeader("Authorization")
-		//log.Println(c.)
-		c.JSON(200, gin.H{})
+		var msg Message
+		id := c.Param("id")
+		msg.Name = id
+		log.Println(id)
+		db.First(&msg)
+
+		c.JSON(200, gin.H{
+			"name":     msg.Name,
+			"motto":    msg.Motto,
+			"interest": msg.Interest,
+			"xueli":    msg.Xueli,
+			"awards":   msg.Awards,
+			"groups":   msg.Group,
+		})
 	})
 	Users.Use(AuthMiddleware())
 	//D := db.Model(&Account{})

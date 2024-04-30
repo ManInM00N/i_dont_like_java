@@ -9,10 +9,10 @@
             <el-input v-model="form.name"  placeholder="请输入用户名"  />
           </el-form-item>
           <el-form-item label="password" prop="password">
-              <el-input  v-model="form.password" type="password" placeholder="请输入密码"/>
+              <el-input  v-model="form.password" type="password" placeholder="请输入密码" show-password="true"/>
           </el-form-item>
           <el-form-item label="password again"  prop="againpassword" >
-            <el-input v-model="form.again_password" type="password" placeholder="再次输入密码"/>
+            <el-input v-model="form.again_password" type="password" placeholder="再次输入密码" show-password="true"/>
           </el-form-item>
           <el-form-item label="email" prop="email">
             <el-input v-model="form.email" placeholder="请输入邮箱" />
@@ -32,7 +32,7 @@
           <button @click="TryRegister" >注册</button><br>
         </el-form>
         <br>
-        <p id="switch">拥有账号？<a href="#/login_in" style="color:deeppink" >登录</a> </p>
+        <p id="switch">拥有账号？<a href="/login_in" style="color:deeppink" >登录</a> </p>
         <iframe width=0 height=0 frameborder=0 name="sendcode"></iframe>
       </div>
 
@@ -121,7 +121,7 @@ function TryRegister(){
     console.log(response)
     if (response.status===200){
       console.log("goto",form.name)
-      router.push({path:"/user",params:{
+      router.push({path:"/user/"+form.name,params:{
           id:form.name
         }})
     }
