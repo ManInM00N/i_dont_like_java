@@ -44,6 +44,26 @@ type Message struct {
 func (a *Message) TableName() string {
 	return "message"
 }
+
+type Food struct {
+	Name        string `gorm:"primaryKey;not null comment: 风景名称" json:"name" binding:"required"`
+	Description string `gorm:"not null comment:介绍" json:"description" binding:"required"`
+	URL         string `gorm:"not null comment: 资源地址" json:"url" binding:"required"`
+}
+
+func (a *Food) TableName() string {
+	return "food"
+}
+
+type Feature struct {
+	Name        string `gorm:"primaryKey;not null comment: 风景名称" json:"name" binding:"required"`
+	Description string `gorm:"not null comment:介绍" json:"description" binding:"required"`
+	URL         string `gorm:"not null comment: 资源地址" json:"url" binding:"required"`
+}
+
+func (a *Feature) TableName() string {
+	return "feature"
+}
 func DBInit() {
 	var err error
 	db, err = gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
@@ -58,13 +78,17 @@ func DBInit() {
 	sqlDB.SetMaxOpenConns(100)
 	//  设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(10 * time.Second) // 10秒钟
-	db.AutoMigrate(&Account{})
-	db.AutoMigrate(&Message{})
+	db.AutoMigrate(&Account{}, &Food{}, &Feature{}, &Message{})
 	if !db.Migrator().HasTable(&Account{}) {
 		os.Exit(17)
 	}
 	if !db.Migrator().HasTable(&Message{}) {
 		os.Exit(18)
 	}
-
+	if !db.Migrator().HasTable(&Message{}) {
+		os.Exit(19)
+	}
+	if !db.Migrator().HasTable(&Message{}) {
+		os.Exit(20)
+	}
 }

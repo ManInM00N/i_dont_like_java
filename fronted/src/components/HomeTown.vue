@@ -4,11 +4,10 @@
   <section class="lists ">
   <el-tabs type="card" stretch="@true" :value="now"  @tab-click="tabClicked" class="isblock tomid" >
     <el-tab-pane label="家乡风景" key=0 >
-      <el-main>
       <el-header class="middle_title" >
         <h1 align="center" style="font-size:26px">家乡风景</h1>
       </el-header>
-      <section class="">
+      <section style="height: 400px">
         <el-carousel :interval="4000" type="card" height="300px" @change="cg2">
           <el-carousel-item v-for="(item,idx) in images2" :key="idx" :label="item.alt" >
             <el-image :src="item.URL"></el-image>
@@ -18,13 +17,49 @@
           <p id="des" >{{describe2[idx2]}}</p>
         </div>
       </section>
-      </el-main>
+<!--        <el-divider/>-->
+
+<!--        <section  >-->
+<!--           <el-row>-->
+<!--              <el-col span="10"/>-->
+<!--             <el-col span="4">-->
+<!--               <el-input v-model="txt1" placeholder="搜索内容">-->
+<!--                 <template #append>-->
+<!--                    <el-button @click="query1" icon="Search"  />-->
+<!--                 </template>-->
+<!--               </el-input>-->
+<!--             </el-col>-->
+<!--             <el-col span="10"/>-->
+
+<!--           </el-row>-->
+<!--            <section v-if="check1==='ok'">-->
+<!--              <el-row  v-for="(item) in q1" :key="item.url" >-->
+<!--                <el-col span="12">-->
+<!--                  <el-card style="max-width: 480px">-->
+<!--                    <template #header>{{item.name}}</template>-->
+<!--                    <img-->
+<!--                        :src="require('../assets/images/'+item.url)"-->
+<!--                        style="width: 100%"-->
+<!--                    />-->
+<!--                  </el-card>-->
+<!--                </el-col>-->
+<!--                <el-col span="12">-->
+<!--                  <div class="de">-->
+<!--                    <p id="des" >{{item.description}}</p>-->
+<!--                  </div>-->
+<!--                </el-col>-->
+<!--              </el-row>-->
+<!--            </section>-->
+<!--            <section v-else>-->
+<!--              <el-result title="404" sub-title="Sorry, request error"/>-->
+<!--            </section>-->
+<!--        </section>-->
     </el-tab-pane>
     <el-tab-pane label="家乡美食" key=1>
       <div class="middle_title">
         <h1 align="center" style="font-size:26px">家乡美食</h1>
       </div>
-      <section>
+      <section style="height:  400px">
         <el-carousel :interval="4000" type="card" height="300px"   @change="cg1">
           <el-carousel-item v-for="(item,idx) in images" :key="idx" :label="item.alt"  >
             <el-image :src="item.URL"></el-image>
@@ -34,9 +69,84 @@
           <p id="des" >{{describe[idx1]}}</p>
         </div>
       </section>
+<!--      <el-divider/>-->
+
+<!--      <section  >-->
+<!--        <el-row>-->
+<!--          <el-col span="10"/>-->
+<!--          <el-col span="4">-->
+<!--            <el-input v-model="txt2"  placeholder="搜索内容">-->
+<!--              <template #append>-->
+<!--                <el-button @click="query2" icon="Search" >-->
+<!--                </el-button>-->
+<!--              </template>-->
+<!--            </el-input>-->
+<!--          </el-col>-->
+<!--          <el-col span="10"/>-->
+
+<!--        </el-row>-->
+<!--        <section v-if="check2==='ok'">-->
+<!--          <el-row  v-for="(item) in q2" :key="item.url" >-->
+<!--            <el-col span="12">-->
+<!--              <el-card style="width: 400px">-->
+<!--                <template #header>{{item.name}}</template>-->
+<!--                <img-->
+<!--                    :src="require('../assets/images/'+item.url)"-->
+<!--                    style="width: 100%"-->
+<!--                />-->
+<!--              </el-card>-->
+<!--            </el-col>-->
+<!--            <el-col span="12">-->
+<!--              <div class="de">-->
+<!--                <p id="des" >{{item.description}}</p>-->
+<!--              </div>-->
+<!--            </el-col>-->
+<!--          </el-row>-->
+<!--        </section>-->
+<!--        <section v-else>-->
+<!--          <el-result title="404" sub-title="Sorry, request error"/>-->
+<!--        </section>-->
+<!--      </section>-->
     </el-tab-pane>
 
   </el-tabs>
+    <el-divider/>
+
+    <section  >
+      <el-row>
+        <el-col span="10"/>
+        <el-col span="4">
+          <el-input v-model="txt1" placeholder="搜索内容">
+            <template #append>
+              <el-button @click="query1" icon="Search"  />
+            </template>
+          </el-input>
+        </el-col>
+        <el-col span="10"/>
+
+      </el-row>
+<!--      <section v-if="check1.value==='ok'">-->
+        <el-row  v-for="(item) in q1" :key="item.url" >
+          <el-col span="12">
+            <el-card style="max-width: 480px">
+              <template #header>{{item.name}}</template>
+              <img
+                  :src="require('../assets/images/'+item.url)"
+                  style="width: 100%"
+              />
+            </el-card>
+          </el-col>
+          <el-col span="12">
+            <div class="de">
+              <p id="des" >{{item.description}}</p>
+            </div>
+          </el-col>
+        </el-row>
+<!--      </section>-->
+<!--      <section v-else>-->
+<!--        <el-result title="404" sub-title="Sorry, request error"/>-->
+<!--      </section>-->
+    </section>
   </section>
   <section width="100%">
     <div id="vide" width="100%">
@@ -49,7 +159,9 @@
 
 </template>
 <script setup>
-import { ref} from "vue";
+import {ref} from "vue";
+import axios from "axios";
+// const route = useRouter()
 const idx1 = ref(0);
 const idx2 = ref(0);
 const now = ref(0);
@@ -57,6 +169,24 @@ const vid = ref([
     require("@/assets/images/xuanchuan.mp4"),
     require("@/assets/images/meishi.mp4"),
 ]);
+const q1 = ref([])
+const check1 = ref("ok")
+// const check2  = ref("ok")
+// let q2 = reactive([])
+const txt1= ref('')
+// const txt2 = ref('')
+function query1(){
+
+  console.log(txt1.value)
+  axios.get("/apis/HomeTown?search="+txt1.value
+  ).then(response=>{
+    check1.value=response.data.message
+    console.log(response.data,check1.value==='ok')
+    q1.value = response.data.res
+  }).catch(error=>{
+    console.error(error)
+  })
+}
 const describe2 = [
   "湖州太湖旅游度假区是湖州滨湖大城市建设重点打造的滨湖新区，集旅游、购物、休闲、度假、居住为一体的国家级旅游区。在太湖月亮湾上面有一个标志性建筑太湖明珠，就是月亮酒店，是湖州地标性建筑。度假区主要景点有太湖温泉水世界、渔人码头、月亮广场、奥特莱斯、发现岛主题乐园、黄金湖岸、长田漾湿地公园等。",
   "安吉竹博园是一家集竹海观光、竹文化主题体验及科普教育为一体的竹类大观园，是湖州著名的旅游景点之一。竹博园总占地1200余亩，其中竹子分类观赏园区600亩，园内收集有散生、混生、丛生竹种300余种，其中安吉乡土竹种50种，国外引种20余种；主要有热带雨林、玉带桥熊猫欢乐世界、中国竹子博物馆、安吉大小熊猫馆、雨雾广场、玉带桥、古代艺术品展览馆、文明竹迹广场等旅游景点。",
@@ -90,20 +220,19 @@ var images = [
 ]
 
 function tabClicked(tab) {
-  console.log(tab);
-  console.log(tab.name);
+  // console.log(tab);
+  // console.log(tab.name);
   now.value = tab.index;
-  console.log(now.value);
-  console.log(tab.index);
-
+  // console.log(now.value);
+  // console.log(tab.index);
 }
-function cg2(now,prev){
+function cg2(now){
   idx2.value = now;
-  console.log(now,prev);
+  // console.log(now,prev);
 }
-function cg1(now,prev){
+function cg1(now){
   idx1.value = now;
-  console.log(now,prev);
+  // console.log(now,prev);
 }
 
 

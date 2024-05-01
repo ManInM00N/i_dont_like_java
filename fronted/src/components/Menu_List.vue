@@ -1,4 +1,8 @@
 <template>
+  <el-section
+    style="min-height : 100vh"
+  >
+
   <el-header
     style="background: transparent;text-align:center"
     class=""
@@ -12,7 +16,6 @@
         :router="true"
     >
     <el-container class="top-items" >
-
       <el-menu-item
           v-for="(item,idx) in items"
           :key="item.key"
@@ -47,20 +50,23 @@
         <keep-alive v-if="route.meta.keepAlive ">
           <component
               :is="Component"
+              class="forall"
           />
         </keep-alive>
-        <component v-else :is="Component" class="forall"/>
+        <component v-else :is="Component" class="forall" />
       </router-view>
     </section>
     <el-divider style="margin-top: 5px;margin-bottom: 5px"/>
 <!--    <el-backtop :right="100" :bottom="100" :visibility-height="200" />-->
-    <div style="clear: both"></div>
-    <section class="footer" align="center"  >
+<!--    <div style="clear: both"></div>-->
+    <el-footer class="footer" align="center"  >
       <p >个人学号：2200303310 姓名：李瑟钰 班级：22计算机3</p>
       <p >联系方式： QQ:571404393</p>
       <p>你是今天第{{num}}个访客</p>
-    </section>
+    </el-footer>
   </section>
+  </el-section>
+
 </template>
 
 <script setup>
@@ -73,9 +79,10 @@ const items = ref([
   {id : 1, iconmsg : "HomeFilled",key:"Home",index:"/"},
   {id : 2, iconmsg : "ChatDotRound",key:"CommentBoard",index:"/CommentBoard"},
   {id : 3, iconmsg:"Avatar",key:"Myself",index:"/MyselfMsg"},
-  {id:4,iconmsg: "User",key:"User",index:"/User"},
-  {id:5,iconmsg: "Promotion",key:"HomeTown",index:"/HomeTown"},
-  {id:6,iconmsg: "User",key:"Sign in",index:"/login_in"}
+  {id:4,iconmsg: "Promotion",key:"HomeTown",index:"/HomeTown?search="},
+  {id:5,iconmsg: "User",key:"Sign in",index:"/login_in"},
+  {id:6,iconmsg: "User",key:"User",index:"/User" },
+
 ])
 onMounted(()=>{
     axios.get("/apis/").then(response=>{

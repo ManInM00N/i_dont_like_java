@@ -41,7 +41,8 @@ const router = createRouter({
             meta:{
                 keepAlive :false,
                 refresh: true,
-            }
+            },
+            props: (route) => ({ query: route.query.search })
         },
         {
             path: '/CommentBoard',

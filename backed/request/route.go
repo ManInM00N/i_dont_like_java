@@ -62,6 +62,7 @@ func ServeInit() {
 	Api.POST("/login", Login)
 	Api.POST("/update", update)
 	Api.POST("/register", Register)
+	R.GET("/HomeTown", Query)
 	Users := R.Group("/user")
 	Users.GET("/:id", func(c *gin.Context) {
 		//tokenString := c.GetHeader("Authorization")

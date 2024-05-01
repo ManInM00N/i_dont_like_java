@@ -4,9 +4,8 @@ go 1.21.5
 
 require (
 	github.com/ManInM00N/go-tool v0.0.0-20240111170037-5d6b1781d885
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.1
-	github.com/golang-jwt/jwt/v5 v5.0.0
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/redis/go-redis/v9 v9.5.1
 	golang.org/x/crypto v0.21.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df

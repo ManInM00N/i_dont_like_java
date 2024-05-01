@@ -1,6 +1,10 @@
 package request
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"log"
+)
 
 func update(c *gin.Context) {
 	//data := make(map[string]interface{})
@@ -17,5 +21,20 @@ func update(c *gin.Context) {
 	newone.Xueli = msg.Xueli
 	newone.Awards = msg.Awards
 	db.Save(&newone)
+
+}
+func Query(c *gin.Context) {
+	require := c.Query("search")
+	mod := c.Query("type")
+	ip := c.ClientIP()
+	log.Println(ip, mod, require)
+	if len(require) > 0 {
+		var repost []Food
+		db.Where("name like ?", fmt.Sprintf("%%%s%%", require)).Limit(10).Find(&repost)
+		c.IndentedJSON(200, gin.H{
+			"message": "ok",
+			"res":     repost,
+		})
+	}
 
 }
