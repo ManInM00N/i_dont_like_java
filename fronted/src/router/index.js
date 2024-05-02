@@ -6,6 +6,7 @@ import HomeTown from "../components/HomeTown.vue";
 import CommentBoard from "@/components/CommentBoard.vue";
 import sign_up from "@/components/sign_up.vue";
 import UserMsg from "@/components/UserMsg.vue";
+import ReRefresh from "@/components/ReRefresh.vue";
 const router = createRouter({
     history: createWebHashHistory(),
     routes:[
@@ -63,6 +64,13 @@ const router = createRouter({
             component : UserMsg,
             meta:{
                 keepAlive :true,
+                refresh: true,
+            }
+        },{
+            path: '/refresh',
+            component:ReRefresh,
+            meta: {
+                title: '用于同路由刷新',
                 refresh: true,
             }
         }

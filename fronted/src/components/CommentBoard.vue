@@ -24,6 +24,7 @@
 
   width: 650px;
   height: 100%;
+  min-height:650px;
   background-color:rgba(255, 255, 255, 0.25);
   margin-top: 5%;
   border-radius: 20px;

@@ -1,5 +1,6 @@
 <template>
   <el-section
+      class="inline "
     style="min-height : 100vh"
   >
 
@@ -56,10 +57,10 @@
         <component v-else :is="Component" class="forall" />
       </router-view>
     </section>
-    <el-divider style="margin-top: 5px;margin-bottom: 5px"/>
+    <el-divider  style="margin-top: 5px;margin-bottom: 5px"/>
 <!--    <el-backtop :right="100" :bottom="100" :visibility-height="200" />-->
 <!--    <div style="clear: both"></div>-->
-    <el-footer class="footer" align="center"  >
+    <el-footer  class="footer" align="center"  >
       <p >个人学号：2200303310 姓名：李瑟钰 班级：22计算机3</p>
       <p >联系方式： QQ:571404393</p>
       <p>你是今天第{{num}}个访客</p>
@@ -117,10 +118,14 @@ function  handleMenuSelect(index) {
 /deep/
 .footer{
   align-items: center;float:left;width:100%;
+  position: relative;
   &p{
     margin: 0 0 0 0;
   }
 }
-
+.inline{
+  display: flex;
+  flex-direction: column;
+}
 
 </style>

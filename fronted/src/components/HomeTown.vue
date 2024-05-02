@@ -159,8 +159,9 @@
 
 </template>
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import axios from "axios";
+import {useRoute, useRouter} from "vue-router";
 // const route = useRouter()
 const idx1 = ref(0);
 const idx2 = ref(0);
@@ -175,17 +176,48 @@ const check1 = ref("ok")
 // let q2 = reactive([])
 const txt1= ref('')
 // const txt2 = ref('')
-function query1(){
-
-  console.log(txt1.value)
-  axios.get("/apis/HomeTown?search="+txt1.value
-  ).then(response=>{
+const route = useRoute();
+// eslint-disable-next-line no-unused-vars
+const router = useRouter();
+const searchParam = route.query.search;
+// const param = reactive({
+//   search : txt1.toString(),
+// })
+const search = async () => {
+  console.log(txt1.value );
+  try {
+    const response = await axios.get(
+        "/apis/HomeTown?search="+
+        route.query.search
+    );
     check1.value=response.data.message
     console.log(response.data,check1.value==='ok')
     q1.value = response.data.res
-  }).catch(error=>{
-    console.error(error)
-  })
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+  }
+};
+
+if (searchParam) {
+  // txt1.value = searchParam;
+  search()
+}
+watch(route, (to, from) => {
+  console.log(txt1.value)
+
+  if (to.query.search !== from.query.search) {
+    txt1.value = to.query.search || '';
+    // 执行重新加载数据或刷新页面的操作
+    console.log(txt1.value)
+    search();
+  }
+});
+function query1(){
+
+  router.push("/HomeTown?search="+txt1.value.toString());
+  // console.log(txt1.value)
+  router.replace  ('/refresh')
+  // router.replace("/HomeTown?search="+txt1.value.toString());
 }
 const describe2 = [
   "湖州太湖旅游度假区是湖州滨湖大城市建设重点打造的滨湖新区，集旅游、购物、休闲、度假、居住为一体的国家级旅游区。在太湖月亮湾上面有一个标志性建筑太湖明珠，就是月亮酒店，是湖州地标性建筑。度假区主要景点有太湖温泉水世界、渔人码头、月亮广场、奥特莱斯、发现岛主题乐园、黄金湖岸、长田漾湿地公园等。",
