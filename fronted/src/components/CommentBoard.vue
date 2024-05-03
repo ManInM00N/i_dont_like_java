@@ -3,15 +3,11 @@
     <div class="information">
       <h1 class="Title">留言板</h1>
       <el-divider border-style="dotted"/>
-<!--      <section v-for="(item) in q" :key="item.idx" >-->
-
-<!--      </section>-->
       <div id="messageSub" >
         <div v-for="(item) in q" :key="item.id">
           <el-card class="box-card">
             <template #header>{{item.name}} :</template>
               {{ item.inner}} <br>
-<!--            <template #footer>{{item.name}}</template>-->
           </el-card>
         </div>
       </div>

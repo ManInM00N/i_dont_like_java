@@ -41,24 +41,20 @@
 
 <script setup>
 import {reactive, ref} from "vue";
-// eslint-disable-next-line no-unused-vars
 import axios from "axios";
 import router from "@/router";
 import {ElMessage} from "element-plus";
-// import api from "../api/request.js"
 const form = reactive({
   name : '',
   password:'',
   again_password:'',
   email:'',
   code:'',
-
     }
 )
 const checksame = (rule, value, callback) => {
   if (form.again_password === '') {
     callback(new Error('请再次输入密码'))
-    // password 是表单上绑定的字段
   } else if (form.again_password !== form.password) {
     callback(new Error('两次输入密码不一致!'))
   } else {
@@ -83,7 +79,6 @@ const issend =  ref(false);
 const countdown = ref(0);
 const incode = ref('');
 const reg = /[a-zA-Z0-9][\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]/
-// eslint-disable-next-line no-unused-vars
 function startCountdown() {
   countdown.value = 60;
   const timer = setInterval(() => {

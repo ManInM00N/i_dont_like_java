@@ -1,4 +1,3 @@
-
 <template>
   <section class="inmid" style="display: flex">
   <section class="lists ">
@@ -38,7 +37,6 @@
     <el-divider/>
 
     <section  >
-<!--      <section style="display: flex">-->
         <el-row>
           <el-col :span="8" />
           <el-col :span="8">
@@ -50,7 +48,6 @@
           </el-col>
           <el-col :span="8"/>
         </el-row>
-<!--      </section>-->
       <section class="information" >
         <el-main>
           <el-row  v-for="(item) in q1" :key="item.url" >
@@ -84,10 +81,8 @@
 
 </template>
 <script setup>
-import {ref, watch} from "vue";
+import {ref} from "vue";
 import axios from "axios";
-import {useRoute, useRouter} from "vue-router";
-// const route = useRouter()
 const idx1 = ref(0);
 const idx2 = ref(0);
 const now = ref(0);
@@ -97,16 +92,7 @@ const vid = ref([
 ]);
 const q1 = ref([])
 const check1 = ref("ok")
-// const check2  = ref("ok")
-// let q2 = reactive([])
 const txt1= ref('')
-// const txt2 = ref('')
-const route = useRoute();
-// eslint-disable-next-line no-unused-vars
-const router = useRouter();
-const searchParam = route.query.search;
-// const param = reactive({
-//   search : txt1.toString(),
 // })
 const search = async () => {
   console.log(txt1.value );
@@ -122,33 +108,9 @@ const search = async () => {
     console.error('Error fetching search results:', error);
   }
 };
-
-if (searchParam) {
-  // txt1.value = searchParam;
-  search()
-}
-watch(route.query.search, (oldmsg, newmsg) => {
-  console.log(txt1.value)
-
-  if (oldmsg   !== newmsg) {
-    txt1.value =newmsg || '';
-    // 执行重新加载数据或刷新页面的操作
-    console.log(txt1.value)
-    search();
-    // next()
-  }
-});
 function query1(){
-
-  // router.push("/HomeTown?search="+txt1.value.toString());
   search();
   console.log(txt1.value)
-  // let tt = q1.value;
-  // location.reload();
-  // q1.value =tt
-  // router.route.
-  // router.replace  ('/refresh')
-  // router.replace("/HomeTown?search="+txt1.value.toString());
 }
 const describe2 = [
   "湖州太湖旅游度假区是湖州滨湖大城市建设重点打造的滨湖新区，集旅游、购物、休闲、度假、居住为一体的国家级旅游区。在太湖月亮湾上面有一个标志性建筑太湖明珠，就是月亮酒店，是湖州地标性建筑。度假区主要景点有太湖温泉水世界、渔人码头、月亮广场、奥特莱斯、发现岛主题乐园、黄金湖岸、长田漾湿地公园等。",
@@ -183,19 +145,13 @@ var images = [
 ]
 
 function tabClicked(tab) {
-  // console.log(tab);
-  // console.log(tab.name);
   now.value = tab.index;
-  // console.log(now.value);
-  // console.log(tab.index);
 }
 function cg2(now){
   idx2.value = now;
-  // console.log(now,prev);
 }
 function cg1(now){
   idx1.value = now;
-  // console.log(now,prev);
 }
 
 

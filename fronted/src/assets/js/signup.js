@@ -6,4 +6,3 @@ function ifnull(txt){
     var $reg=/\s+/;
     return $reg.test(txt);
 }
-// eslint-disable-next-line no-unused-vars

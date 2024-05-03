@@ -8,7 +8,6 @@
     <section id="tip">
       <div  class="information" >
         <h1 align="center" style="font-size:26px">个人简介</h1>
-        <!--      <el-image :src='require("@../assets/images/tx.jpg")' alt="" align="center" />-->
         <el-row>
           <el-col :span="6"></el-col>
           <el-col :span="6">
@@ -17,53 +16,51 @@
             </div>
 
           </el-col>
-          <el-col :span="6"></el-col>
-          <el-col :span="6"></el-col>
+          <el-col :span="6"/>
+          <el-col :span="6"/>
         </el-row>
         <el-row>
-          <el-col :span="6"><div ></div></el-col>
+          <el-col :span="6"/>
           <el-col :span="4"><div>姓名</div> </el-col>
           <el-col :span="8"><div >{{form.name}}</div> </el-col>
-          <el-col :span="6"><div ></div> </el-col>
+          <el-col :span="6"/>
         </el-row>
         <el-row>
-          <el-col :span="6"><div></div></el-col>
+          <el-col :span="6"/>
           <el-col :span="4"><div >求学经历：</div> </el-col>
           <el-col :span="8"><el-input v-model="form.xueli" ></el-input> </el-col>
-          <el-col :span="6"><div ></div> </el-col>
+          <el-col :span="6"/>
         </el-row>
         <el-row>
-          <el-col :span="6"><div ></div></el-col>
+          <el-col :span="6"/>
           <el-col :span="4"><div >获奖经历：</div> </el-col>
           <el-col :span="8"><el-input el-input v-model="form.awards"> </el-input> </el-col>
-          <el-col :span="6"><div ></div> </el-col>
+          <el-col :span="6"/>
         </el-row>
         <el-row>
-          <el-col :span="6"><div ></div></el-col>
+          <el-col :span="6"/>
           <el-col :span="4"><div >参与社团：</div> </el-col>
           <el-col :span="8"><el-input v-model="form.group"></el-input> </el-col>
-          <el-col :span="6"><div ></div> </el-col>
+          <el-col :span="6"/>
         </el-row>
         <el-row>
-          <el-col :span="6"><div ></div></el-col>
+          <el-col :span="6"/>
           <el-col :span="4"><div >兴趣爱好：</div> </el-col>
           <el-col :span="8"><el-input v-model="form.interest" ></el-input> </el-col>
-          <el-col :span="6"><div ></div> </el-col>
+          <el-col :span="6"/>
         </el-row>
         <el-row>
-          <el-col :span="6"><div ></div></el-col>
+          <el-col :span="6"/>
           <el-col :span="4"><div >座右铭：</div> </el-col>
           <el-col :span="8"><el-input v-model="form.motto"></el-input> </el-col>
-          <el-col :span="6"><div ></div> </el-col>
+          <el-col :span="6"/>
         </el-row >
         <el-row>
-          <el-col :span="8"><div ></div></el-col>
-          <el-col :span="3"> </el-col>
+          <el-col :span="8"/>
+          <el-col :span="3"/>
           <el-col :span="2"><el-button @click="update" color="#626aef" :dark="true" plain>修改信息</el-button> </el-col>
-
-          <el-col :span="3"> </el-col>
-
-          <el-col :span="8"> </el-col>
+          <el-col :span="3"/>
+          <el-col :span="8"/>
         </el-row>
       </div>
     </section>
@@ -72,7 +69,6 @@
 <script setup>
 import {reactive} from "vue";
 import axios from "axios";
-// eslint-disable-next-line no-unused-vars
 import {useRoute} from "vue-router";
 const route = useRoute()
 const form = reactive({

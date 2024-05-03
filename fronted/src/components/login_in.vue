@@ -20,8 +20,7 @@
 
 
 <script setup>
-// eslint-disable-next-line no-unused-vars
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
 import router from "@/router";
 import axios from "axios";
 const form = reactive({

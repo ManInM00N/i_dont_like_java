@@ -12,7 +12,6 @@ import axios from "axios";
 import 'element-plus/theme-chalk/el-loading.css';
 import 'element-plus/theme-chalk/el-message.css';
 
-// Vue.component(CommentEditor.name, CommentEditor)
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
@@ -20,19 +19,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(router)
 app.use(ElementPlus)
 app.use(V3waterfall)
-// app.provide("$axios",axios)
 app.mount('#app')
-axios.interceptors.request.use(
-    config=>{
-            let accessToken = localStorage.getItem('accessToken');
-            if (accessToken && accessToken !== '') {
-                config.headers.common['Authorization'] = accessToken;
-            }
-            // 设置token end
-            return config;
-    },
-    error => Promise.reject(error)
-)
 app.config.globalProperties.$http = axios
 
 
