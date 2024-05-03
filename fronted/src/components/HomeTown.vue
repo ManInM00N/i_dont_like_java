@@ -17,43 +17,6 @@
           <p id="des" >{{describe2[idx2]}}</p>
         </div>
       </section>
-<!--        <el-divider/>-->
-
-<!--        <section  >-->
-<!--           <el-row>-->
-<!--              <el-col span="10"/>-->
-<!--             <el-col span="4">-->
-<!--               <el-input v-model="txt1" placeholder="搜索内容">-->
-<!--                 <template #append>-->
-<!--                    <el-button @click="query1" icon="Search"  />-->
-<!--                 </template>-->
-<!--               </el-input>-->
-<!--             </el-col>-->
-<!--             <el-col span="10"/>-->
-
-<!--           </el-row>-->
-<!--            <section v-if="check1==='ok'">-->
-<!--              <el-row  v-for="(item) in q1" :key="item.url" >-->
-<!--                <el-col span="12">-->
-<!--                  <el-card style="max-width: 480px">-->
-<!--                    <template #header>{{item.name}}</template>-->
-<!--                    <img-->
-<!--                        :src="require('../assets/images/'+item.url)"-->
-<!--                        style="width: 100%"-->
-<!--                    />-->
-<!--                  </el-card>-->
-<!--                </el-col>-->
-<!--                <el-col span="12">-->
-<!--                  <div class="de">-->
-<!--                    <p id="des" >{{item.description}}</p>-->
-<!--                  </div>-->
-<!--                </el-col>-->
-<!--              </el-row>-->
-<!--            </section>-->
-<!--            <section v-else>-->
-<!--              <el-result title="404" sub-title="Sorry, request error"/>-->
-<!--            </section>-->
-<!--        </section>-->
     </el-tab-pane>
     <el-tab-pane label="家乡美食" key=1>
       <div class="middle_title">
@@ -69,83 +32,45 @@
           <p id="des" >{{describe[idx1]}}</p>
         </div>
       </section>
-<!--      <el-divider/>-->
-
-<!--      <section  >-->
-<!--        <el-row>-->
-<!--          <el-col span="10"/>-->
-<!--          <el-col span="4">-->
-<!--            <el-input v-model="txt2"  placeholder="搜索内容">-->
-<!--              <template #append>-->
-<!--                <el-button @click="query2" icon="Search" >-->
-<!--                </el-button>-->
-<!--              </template>-->
-<!--            </el-input>-->
-<!--          </el-col>-->
-<!--          <el-col span="10"/>-->
-
-<!--        </el-row>-->
-<!--        <section v-if="check2==='ok'">-->
-<!--          <el-row  v-for="(item) in q2" :key="item.url" >-->
-<!--            <el-col span="12">-->
-<!--              <el-card style="width: 400px">-->
-<!--                <template #header>{{item.name}}</template>-->
-<!--                <img-->
-<!--                    :src="require('../assets/images/'+item.url)"-->
-<!--                    style="width: 100%"-->
-<!--                />-->
-<!--              </el-card>-->
-<!--            </el-col>-->
-<!--            <el-col span="12">-->
-<!--              <div class="de">-->
-<!--                <p id="des" >{{item.description}}</p>-->
-<!--              </div>-->
-<!--            </el-col>-->
-<!--          </el-row>-->
-<!--        </section>-->
-<!--        <section v-else>-->
-<!--          <el-result title="404" sub-title="Sorry, request error"/>-->
-<!--        </section>-->
-<!--      </section>-->
     </el-tab-pane>
 
   </el-tabs>
     <el-divider/>
 
     <section  >
-      <el-row>
-        <el-col span="10"/>
-        <el-col span="4">
-          <el-input v-model="txt1" placeholder="搜索内容">
-            <template #append>
-              <el-button @click="query1" icon="Search"  />
-            </template>
-          </el-input>
-        </el-col>
-        <el-col span="10"/>
-
-      </el-row>
-<!--      <section v-if="check1.value==='ok'">-->
-        <el-row  v-for="(item) in q1" :key="item.url" >
-          <el-col span="12">
-            <el-card style="max-width: 480px">
-              <template #header>{{item.name}}</template>
-              <img
-                  :src="require('../assets/images/'+item.url)"
-                  style="width: 100%"
-              />
-            </el-card>
+<!--      <section style="display: flex">-->
+        <el-row>
+          <el-col :span="8" />
+          <el-col :span="8">
+            <el-input v-model="txt1" placeholder="输入搜索...">
+              <template #append>
+                <el-button @click="query1" icon="Search"  />
+              </template>
+            </el-input>
           </el-col>
-          <el-col span="12">
-            <div class="de">
-              <p id="des" >{{item.description}}</p>
-            </div>
-          </el-col>
+          <el-col :span="8"/>
         </el-row>
 <!--      </section>-->
-<!--      <section v-else>-->
-<!--        <el-result title="404" sub-title="Sorry, request error"/>-->
-<!--      </section>-->
+      <section class="information" >
+        <el-main>
+          <el-row  v-for="(item) in q1" :key="item.url" >
+            <el-col span="12">
+              <el-card style="max-width: 480px">
+                <template #header>{{item.name}}</template>
+                <img
+                    :src="require('../assets/images/'+item.url)"
+                    style="width: 100%"
+                />
+              </el-card>
+            </el-col>
+            <el-col span="12">
+              <div class="de">
+                <p id="des" >{{item.description}}</p>
+              </div>
+            </el-col>
+          </el-row>
+        </el-main>
+      </section>
     </section>
   </section>
   <section width="100%">
@@ -188,7 +113,7 @@ const search = async () => {
   try {
     const response = await axios.get(
         "/apis/HomeTown?search="+
-        route.query.search
+        txt1.value
     );
     check1.value=response.data.message
     console.log(response.data,check1.value==='ok')
@@ -202,21 +127,27 @@ if (searchParam) {
   // txt1.value = searchParam;
   search()
 }
-watch(route, (to, from) => {
+watch(route.query.search, (oldmsg, newmsg) => {
   console.log(txt1.value)
 
-  if (to.query.search !== from.query.search) {
-    txt1.value = to.query.search || '';
+  if (oldmsg   !== newmsg) {
+    txt1.value =newmsg || '';
     // 执行重新加载数据或刷新页面的操作
     console.log(txt1.value)
     search();
+    // next()
   }
 });
 function query1(){
 
-  router.push("/HomeTown?search="+txt1.value.toString());
-  // console.log(txt1.value)
-  router.replace  ('/refresh')
+  // router.push("/HomeTown?search="+txt1.value.toString());
+  search();
+  console.log(txt1.value)
+  // let tt = q1.value;
+  // location.reload();
+  // q1.value =tt
+  // router.route.
+  // router.replace  ('/refresh')
   // router.replace("/HomeTown?search="+txt1.value.toString());
 }
 const describe2 = [
@@ -296,6 +227,21 @@ function cg1(now){
   -webkit-background-clip: text;
   color: transparent;
   margin-top: 0px;
+}
+.information {
+
+  width: 650px;
+  height: 100%;
+  min-height:650px;
+  background-color:rgba(255, 255, 255, 0.25);
+  margin-top: 15px;
+  border-radius: 20px;
+  padding: 25px 25px;
+  padding-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  margin-left: calc(50% - 300px);
+  margin-right: calc(50% - 300px);
 }
 @import "../assets/style/variable.less";
 </style>

@@ -22,38 +22,38 @@
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
-          <el-col :span="6"><div>姓名</div> </el-col>
-          <el-col :span="6"><div >{{form.name}}</div> </el-col>
+          <el-col :span="4"><div>姓名</div> </el-col>
+          <el-col :span="8"><div >{{form.name}}</div> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div></div></el-col>
-          <el-col :span="6"><div >求学经历：</div> </el-col>
-          <el-col :span="6"><el-input v-model="form.xueli" ></el-input> </el-col>
+          <el-col :span="4"><div >求学经历：</div> </el-col>
+          <el-col :span="8"><el-input v-model="form.xueli" ></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
-          <el-col :span="6"><div >获奖经历：</div> </el-col>
-          <el-col :span="6"><el-input el-input v-model="form.awards"> </el-input> </el-col>
+          <el-col :span="4"><div >获奖经历：</div> </el-col>
+          <el-col :span="8"><el-input el-input v-model="form.awards"> </el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
-          <el-col :span="6"><div >参与社团：</div> </el-col>
-          <el-col :span="6"><el-input v-model="form.group"></el-input> </el-col>
+          <el-col :span="4"><div >参与社团：</div> </el-col>
+          <el-col :span="8"><el-input v-model="form.group"></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
-          <el-col :span="6"><div >兴趣爱好：</div> </el-col>
-          <el-col :span="6"><el-input v-model="form.interest" ></el-input> </el-col>
+          <el-col :span="4"><div >兴趣爱好：</div> </el-col>
+          <el-col :span="8"><el-input v-model="form.interest" ></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row>
         <el-row>
           <el-col :span="6"><div ></div></el-col>
-          <el-col :span="6"><div >座右铭：</div> </el-col>
-          <el-col :span="6"><el-input v-model="form.motto"></el-input> </el-col>
+          <el-col :span="4"><div >座右铭：</div> </el-col>
+          <el-col :span="8"><el-input v-model="form.motto"></el-input> </el-col>
           <el-col :span="6"><div ></div> </el-col>
         </el-row >
         <el-row>
@@ -152,6 +152,9 @@ init()
     display: inline-block;
     border: none;
     font-size: 14px;
+    .el-row{
+      margin-bottom:10px;
+    }
   }
 }
 </style>

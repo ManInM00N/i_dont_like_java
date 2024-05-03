@@ -41,10 +41,10 @@
 
 <script setup>
 import {reactive, ref} from "vue";
-import  checksame from "../assets/js/signup.js";
 // eslint-disable-next-line no-unused-vars
 import axios from "axios";
 import router from "@/router";
+import {ElMessage} from "element-plus";
 // import api from "../api/request.js"
 const form = reactive({
   name : '',
@@ -55,6 +55,16 @@ const form = reactive({
 
     }
 )
+const checksame = (rule, value, callback) => {
+  if (form.again_password === '') {
+    callback(new Error('请再次输入密码'))
+    // password 是表单上绑定的字段
+  } else if (form.again_password !== form.password) {
+    callback(new Error('两次输入密码不一致!'))
+  } else {
+    callback()
+  }
+};
 const rules = ref({
   name:[
     { required: true, trigger: 'blur' ,pattern: /[a-zA-Z0-9]{4,20}/, message: '名称只能由英文字母数字及下划线组成,且长度为4-20个字符'}
@@ -73,7 +83,6 @@ const issend =  ref(false);
 const countdown = ref(0);
 const incode = ref('');
 const reg = /[a-zA-Z0-9][\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]/
-
 // eslint-disable-next-line no-unused-vars
 function startCountdown() {
   countdown.value = 60;
@@ -100,9 +109,11 @@ function sendCode() {
     }
   }).then(response=>{
     console.log(response)
-    issend.value = false;
   }).catch(error=>{
     console.log(error)
+  }).finally(()=>{
+    issend.value = false;
+
   })
   startCountdown();
 }
@@ -117,15 +128,20 @@ function TryRegister(){
     headers:{
       'Content-Type':'application/json'
     }
-  }).then((response)=>{
+  }).then(response=>{
     console.log(response)
+
     if (response.status===200){
       console.log("goto",form.name)
       router.push({path:"/user/"+form.name,params:{
           id:form.name
         }})
     }
+
   }).catch((error)=>{
+    if (error.response.data.code!==200){
+      ElMessage.error(error.response.data.message)
+    }
     console.log(error)
   })
 }

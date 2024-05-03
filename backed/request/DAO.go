@@ -22,9 +22,9 @@ const (
 
 type Account struct {
 	gorm.Model
-	Name     string `gorm:"varchar(20);not null;primarykey" json:"name" binding:"required"`
+	Name     string `gorm:"varchar(20);not null;primaryKey" json:"name" binding:"required"`
 	Password string `gorm:"size:255;not null" json:"password" binding:"required"`
-	Email    string `gorm:"varchar(60);not null" json:"email" binding:"required"`
+	Email    string `gorm:"varchar(60);not null;primaryKey" json:"email" binding:"required"`
 }
 
 func (a *Account) TableName() string {
@@ -33,7 +33,7 @@ func (a *Account) TableName() string {
 
 type Message struct {
 	gorm.Model
-	Name     string `gorm:"type:varchar(20);not null;primarykey comment:姓名 " json:"name" binding:"required"`
+	Name     string `gorm:"type:varchar(20);not null;primaryKey comment:姓名 " json:"name" binding:"required"`
 	Motto    string `gorm:"type:varchar(100);not null comment:座右铭 default:'无' " json:"motto" default:"无"`
 	Interest string `gorm:"type:varchar(100);not null comment:兴趣 default:'无'" json:"interest" default:"无"`
 	Group    string `gorm:"type:varchar(100);not null comment:社团 default:'无'" json:"group" default:"无"`
@@ -45,16 +45,6 @@ func (a *Message) TableName() string {
 	return "message"
 }
 
-type Food struct {
-	Name        string `gorm:"primaryKey;not null comment: 风景名称" json:"name" binding:"required"`
-	Description string `gorm:"not null comment:介绍" json:"description" binding:"required"`
-	URL         string `gorm:"not null comment: 资源地址" json:"url" binding:"required"`
-}
-
-func (a *Food) TableName() string {
-	return "food"
-}
-
 type Feature struct {
 	Name        string `gorm:"primaryKey;not null comment: 风景名称" json:"name" binding:"required"`
 	Description string `gorm:"not null comment:介绍" json:"description" binding:"required"`
@@ -63,6 +53,16 @@ type Feature struct {
 
 func (a *Feature) TableName() string {
 	return "feature"
+}
+
+type Comment struct {
+	gorm.Model
+	Name  string `gorm:"not null comment: 评论者"json:"name" binding:"required"`
+	Inner string `gorm:"not null comment:评论内容" json:"inner" binding:"required"`
+}
+
+func (a *Comment) TableName() string {
+	return "comment"
 }
 func DBInit() {
 	var err error
@@ -78,17 +78,17 @@ func DBInit() {
 	sqlDB.SetMaxOpenConns(100)
 	//  设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(10 * time.Second) // 10秒钟
-	db.AutoMigrate(&Account{}, &Food{}, &Feature{}, &Message{})
+	db.AutoMigrate(&Account{}, &Comment{}, &Feature{}, &Message{})
 	if !db.Migrator().HasTable(&Account{}) {
 		os.Exit(17)
 	}
 	if !db.Migrator().HasTable(&Message{}) {
 		os.Exit(18)
 	}
-	if !db.Migrator().HasTable(&Message{}) {
+	if !db.Migrator().HasTable(&Comment{}) {
 		os.Exit(19)
 	}
-	if !db.Migrator().HasTable(&Message{}) {
+	if !db.Migrator().HasTable(&Feature{}) {
 		os.Exit(20)
 	}
 }

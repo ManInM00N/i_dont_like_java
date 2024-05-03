@@ -9,7 +9,10 @@ import App from './App.vue'
 import V3waterfall from 'v3-waterfall'
 import 'v3-waterfall/dist/style.css'
 import axios from "axios";
+import 'element-plus/theme-chalk/el-loading.css';
+import 'element-plus/theme-chalk/el-message.css';
 
+// Vue.component(CommentEditor.name, CommentEditor)
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)

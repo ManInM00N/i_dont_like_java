@@ -62,6 +62,8 @@ func ServeInit() {
 	Api.POST("/login", Login)
 	Api.POST("/update", update)
 	Api.POST("/register", Register)
+	Api.POST("/comment", ToComment)
+	Api.GET("/comment", GetComments)
 	R.GET("/HomeTown", Query)
 	Users := R.Group("/user")
 	Users.GET("/:id", func(c *gin.Context) {

@@ -63,7 +63,7 @@
     <el-footer  class="footer" align="center"  >
       <p >个人学号：2200303310 姓名：李瑟钰 班级：22计算机3</p>
       <p >联系方式： QQ:571404393</p>
-      <p>你是今天第{{num}}个访客</p>
+      <p>{{dateFormat(date)}}  你是今天第{{num}}个访客</p>
     </el-footer>
   </section>
   </el-section>
@@ -76,22 +76,41 @@ import {defineComponent, onMounted, ref} from "vue";
 // eslint-disable-next-line no-unused-vars
 import axios from "axios"
 const num = ref(0)
+const date = ref()
+const timer = ref()
 const items = ref([
   {id : 1, iconmsg : "HomeFilled",key:"Home",index:"/"},
   {id : 2, iconmsg : "ChatDotRound",key:"CommentBoard",index:"/CommentBoard"},
   {id : 3, iconmsg:"Avatar",key:"Myself",index:"/MyselfMsg"},
-  {id:4,iconmsg: "Promotion",key:"HomeTown",index:"/HomeTown?search="},
+  {id:4,iconmsg: "Promotion",key:"HomeTown",index:"/HomeTown"},
   {id:5,iconmsg: "User",key:"Sign in",index:"/login_in"},
-  {id:6,iconmsg: "User",key:"User",index:"/User" },
 
 ])
+
+function dateFormat () {
+  var date = new Date()
+  var year = date.getFullYear()
+  var month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+  var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+  var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+  var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+  var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+  let week = date.getDay() // 星期
+  let weekArr = [ '星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六' ]
+  // 拼接 时间格式处理
+
+return year + '年' + month + '月' + day + '日 ' + hours + ':' + minutes + ':' + seconds + ' ' + weekArr[week]
+}
+timer.value = setInterval(()=>{
+  date.value = new Date()
+})
 onMounted(()=>{
-    axios.get("/apis/").then(response=>{
-      console.log(response)
-      num.value=response.data.num
-    }).catch(error=>{
-      console.log(error)
-    })
+axios.get("/apis/").then(response=>{
+console.log(response)
+num.value=response.data.num
+}).catch(error=>{
+console.log(error)
+})
 
 });
 
@@ -103,7 +122,7 @@ const activeIndex = ref('/')
 
 // eslint-disable-next-line no-unused-vars
 function  handleMenuSelect(index) {
-  console.log("ee",this.activeIndex)
+console.log("ee",this.activeIndex)
 }
 </script>
 

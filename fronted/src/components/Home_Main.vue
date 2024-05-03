@@ -87,7 +87,7 @@
   border-radius: 20px;
   padding: 25px 25px;
   padding-bottom: 0px;
-  display: block;
+  display: inline;
   margin-left: calc(50% - 325px);
   margin-right: calc(50% - 325px);
 }

@@ -1,9 +1,12 @@
 package request
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 	"log"
+	"main/binary"
 	"net/http"
 )
 
@@ -12,6 +15,7 @@ type Register_Msg struct {
 	Email          string `form:"email" json:"email" gorm:"email"`
 	Password       string `form:"password" json:"password" gorm:"password"`
 	Again_password string `form:"again_password" json:"again_password" gorm:"again_password"`
+	Code           string `form:"code" json:"code" gorm:"code"`
 }
 
 func (a *Register_Msg) Msg() string {
@@ -85,7 +89,6 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	//err := Rdb.Get
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
@@ -95,14 +98,27 @@ func Register(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/register")
 		return
 	}
-	//hash1 := securecookie.GenerateRandomKey(64)
-	//hash2 := securecookie.GenerateRandomKey(32)
-	//val := securecookie.New(hash1, hash2)
-
+	if !binary.IsTrue(data.Email, data.Code) {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "验证码错误",
+		})
+		c.Redirect(http.StatusFound, "/register")
+		return
+	}
 	newuer := Account{
 		Name:     data.Name,
 		Password: string(hashedPassword),
 		Email:    data.Email,
+	}
+	if err := db.First(&newuer).Error; !errors.Is(err, gorm.ErrRecordNotFound) {
+		log.Println(errors.Is(err, gorm.ErrRecordNotFound))
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "账号已存在",
+		})
+		c.Redirect(http.StatusFound, "/register")
+		return
 	}
 	db.Create(&newuer)
 	newMsg := Message{
@@ -110,6 +126,7 @@ func Register(c *gin.Context) {
 	}
 	db.Create(&newMsg)
 	c.JSON(http.StatusOK, gin.H{
+		"code":     200,
 		"name":     newMsg.Name,
 		"motto":    newMsg.Motto,
 		"interest": newMsg.Interest,
@@ -117,6 +134,4 @@ func Register(c *gin.Context) {
 		"awards":   newMsg.Awards,
 		"groups":   newMsg.Group,
 	})
-	//c.Param()
-	//c.Redirect(http.StatusFound, "/user/"+data.Name)
 }

@@ -7,6 +7,7 @@ import (
 
 func main() {
 	LogInit()
+	RedisInit()
 	DBInit()
 	ServeInit()
 	defer F.Close()

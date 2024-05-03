@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	. "github.com/ManInM00N/go-tool/statics"
 	"github.com/redis/go-redis/v9"
 	"gopkg.in/gomail.v2"
 	"log"
@@ -30,25 +29,32 @@ var Rdb *redis.Client
 
 func RedisInit() {
 	Rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:7237",
+		Addr:     "127.0.0.1:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	_, err := Rdb.Ping(ctx).Result()
+	if err != nil {
+		log.Println(err)
+		panic(err)
+	}
 }
 func SendOut(dir string) {
 	rand.Seed(time.Now().Unix())
-	code := IntToString(rand.Int()%900000 + 100000)
-
+	code := fmt.Sprintf("%06v", rand.Intn(600000))
 	newmsg := fmt.Sprintf(message, code)
-	//err := Rdb.SetEx(ctx, dir, code, time.Minute*5).Err()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
+	err := Rdb.SetEx(ctx, dir, code, time.Minute*5).Err()
+	if err != nil {
+		log.Fatalln(err)
+	}
 	m := gomail.NewMessage()
 	m.SetBody("text/html", newmsg)
 	m.SetHeader("To", dir)
-	m.SetHeader("From", userName)
+	m.SetHeader("From", m.FormatAddress(userName, "ManInM00N"))
 	m.SetHeader("Subject", "账号注册")
+	//m.Set
 	d := gomail.NewDialer(
 		host,
 		port,
@@ -62,4 +68,15 @@ func SendOut(dir string) {
 		log.Println(err)
 		panic(err)
 	}
+}
+func IsTrue(dir string, code string) bool {
+	coderow, err := Rdb.Get(ctx, dir).Result()
+	if err != nil && err != redis.Nil {
+		log.Fatalln(err)
+	}
+	log.Println(code, coderow)
+	if coderow != "" && coderow == code {
+		return true
+	}
+	return false
 }

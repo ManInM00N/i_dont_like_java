@@ -25,16 +25,41 @@ func update(c *gin.Context) {
 }
 func Query(c *gin.Context) {
 	require := c.Query("search")
-	mod := c.Query("type")
 	ip := c.ClientIP()
-	log.Println(ip, mod, require)
+	log.Println(ip, require)
 	if len(require) > 0 {
-		var repost []Food
+		var repost []Feature
 		db.Where("name like ?", fmt.Sprintf("%%%s%%", require)).Limit(10).Find(&repost)
+		log.Println(repost)
 		c.IndentedJSON(200, gin.H{
 			"message": "ok",
 			"res":     repost,
 		})
 	}
 
+}
+func ToComment(c *gin.Context) {
+	mm := make(map[string]any)
+	c.BindJSON(&mm)
+	var newmsg Comment
+	newmsg.Name = mm["name"].(string)
+	if len(newmsg.Name) == 0 {
+		newmsg.Name = "匿名"
+	}
+	newmsg.Inner = mm["inner"].(string)
+	db.Create(&newmsg)
+	c.JSON(200, gin.H{
+		"res": newmsg,
+	})
+	log.Println(newmsg)
+
+}
+func GetComments(c *gin.Context) {
+	var res []Comment
+	db.Find(&res)
+	c.IndentedJSON(200, gin.H{
+		"message": "ok",
+		"res":     res,
+	})
+	log.Println(res)
 }
