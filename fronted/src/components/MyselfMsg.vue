@@ -103,9 +103,8 @@
   text-align: right;
   left: 0;
   clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
-  background-color:rgba(246, 177, 48, 0.34);/* 调整这里的颜色 */
+  background-color:rgba(246, 177, 48, 0.34);
   background-image: url("../assets/images/bb1.jpg");
-  /* border-radius: 30px; */
 }
 @import "../assets/style/variable";
 </style>

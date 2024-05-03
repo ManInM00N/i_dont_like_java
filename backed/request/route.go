@@ -83,7 +83,6 @@ func ServeInit() {
 			"groups":   msg.Group,
 		})
 	})
-	Users.Use(AuthMiddleware())
 	//D := db.Model(&Account{})
 	//row, err := db.Model(&Account{}).Select("Name").Rows()
 	//if err != nil {

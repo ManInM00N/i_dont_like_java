@@ -1,7 +1,8 @@
 <template>
   <el-section
       class="inline "
-    style="min-height : 100vh"
+    style="min-height : 100vh;display: flex;
+  flex-direction: column;"
   >
 
   <el-header
@@ -58,8 +59,6 @@
       </router-view>
     </section>
     <el-divider  style="margin-top: 5px;margin-bottom: 5px"/>
-<!--    <el-backtop :right="100" :bottom="100" :visibility-height="200" />-->
-<!--    <div style="clear: both"></div>-->
     <el-footer  class="footer" align="center"  >
       <p >个人学号：2200303310 姓名：李瑟钰 班级：22计算机3</p>
       <p >联系方式： QQ:571404393</p>
@@ -71,9 +70,7 @@
 </template>
 
 <script setup>
-// eslint-disable-next-line no-unused-vars
-import {defineComponent, onMounted, ref} from "vue";
-// eslint-disable-next-line no-unused-vars
+import {onMounted, ref} from "vue";
 import axios from "axios"
 const num = ref(0)
 const date = ref()
@@ -97,7 +94,6 @@ function dateFormat () {
   var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
   let week = date.getDay() // 星期
   let weekArr = [ '星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六' ]
-  // 拼接 时间格式处理
 
 return year + '年' + month + '月' + day + '日 ' + hours + ':' + minutes + ':' + seconds + ' ' + weekArr[week]
 }
@@ -113,17 +109,6 @@ console.log(error)
 })
 
 });
-
-// eslint-disable-next-line no-unused-vars
-const activeIndex = ref('/')
-
-
-
-
-// eslint-disable-next-line no-unused-vars
-function  handleMenuSelect(index) {
-console.log("ee",this.activeIndex)
-}
 </script>
 
 <style lang="less" scoped>
@@ -143,8 +128,7 @@ console.log("ee",this.activeIndex)
   }
 }
 .inline{
-  display: flex;
-  flex-direction: column;
+
 }
 
 </style>
