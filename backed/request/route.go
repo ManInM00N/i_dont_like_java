@@ -33,16 +33,13 @@ func ServeInit() {
 	gin.ForceConsoleColor()
 	R = gin.Default()
 
-	//R.NoRoute(func(c *gin.Context) {
-	//	c.JSON(http.StatusNotFound, gin.H{
-	//		"status": 404,
-	//		"error":  "404, page not exists!",
-	//	})
-	//})
-	//Users := r.Group("/user"){
-	//}
-
-	vis := 1
+	R.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status": 404,
+			"error":  "404, page not exists!",
+		})
+	})
+	vis := 0
 	R.GET("/", func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		vis++
@@ -83,28 +80,6 @@ func ServeInit() {
 			"groups":   msg.Group,
 		})
 	})
-	//D := db.Model(&Account{})
-	//row, err := db.Model(&Account{}).Select("Name").Rows()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//	os.Exit(16)
-	//}
-	//for row.Next() {
-	//	var ss string
-	//	err = row.Scan(&ss)
-	//	if err != nil {
-	//		log.Fatalln("failed to get message", err)
-	//	}
-	//	Users.GET("/"+ss, func(c *gin.Context) {
-	//		//if !reloadtime.Stop() {
-	//		//	<-reloadtime.C
-	//		//}
-	//		//reloadtime.Reset(time.Duration(portmsg.Killtime) * time.Minute)
-	//		var msg Message
-	//		db.Table(account.TableName()).Where("Account = ?", ss).First(&msg)
-	//
-	//	})
-	//}
 
 	R.Use(Cors())
 }

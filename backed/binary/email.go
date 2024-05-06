@@ -54,7 +54,6 @@ func SendOut(dir string) {
 	m.SetHeader("To", dir)
 	m.SetHeader("From", m.FormatAddress(userName, "ManInM00N"))
 	m.SetHeader("Subject", "账号注册")
-	//m.Set
 	d := gomail.NewDialer(
 		host,
 		port,

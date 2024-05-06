@@ -90,6 +90,7 @@ function startCountdown() {
 }
 function sendCode() {
   if (countdown.value > 0 || issend.value|| !reg.test(form.email) ) {
+    ElMessage.warning("邮箱可能不合适")
     return;
   }
   issend.value = true;
