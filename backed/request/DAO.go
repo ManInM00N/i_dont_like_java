@@ -21,10 +21,9 @@ const (
 )
 
 type Account struct {
-	gorm.Model
-	Name     string `gorm:"varchar(20);not null;primaryKey" json:"name" binding:"required"`
+	Name     string `gorm:"type:varchar(20);not null;primaryKey" json:"name" binding:"required"`
 	Password string `gorm:"size:255;not null" json:"password" binding:"required"`
-	Email    string `gorm:"varchar(60);not null;primaryKey" json:"email" binding:"required"`
+	Email    string `gorm:"type:varchar(60);not null;unique" json:"email" binding:"required"`
 }
 
 func (a *Account) TableName() string {
@@ -32,14 +31,13 @@ func (a *Account) TableName() string {
 }
 
 type Message struct {
-	gorm.Model
-	Name     string `gorm:"type:varchar(20);not null;primaryKey comment:姓名 " json:"name" binding:"required"`
-	Motto    string `gorm:"type:varchar(100);not null comment:座右铭 default:'无' " json:"motto" default:"无"`
-	Interest string `gorm:"type:varchar(100);not null comment:兴趣 default:'无'" json:"interest" default:"无"`
-	Group    string `gorm:"type:varchar(100);not null comment:社团 default:'无'" json:"group" default:"无"`
-	Awards   string `gorm:"type:varchar(300);not null comment:获奖记录 default:'无'" json:"awards" default:"无"`
-	Xueli    string `gorm:"type:varchar(50);not null comment:求学经历 default:'无'" json:"xueli" default:"无"`
-	Url      string `gorm:"" json:"url" default:"无"`
+	Name     string `gorm:"type:varchar(20);not null;primaryKey ;comment:姓名 " json:"name" binding:"required"`
+	Motto    string `gorm:"type:varchar(100); comment:座右铭 default:'无' " json:"motto" default:"无"`
+	Interest string `gorm:"type:varchar(100);comment:兴趣 default:'无'" json:"interest" default:"无"`
+	Group    string `gorm:"type:varchar(100); comment:社团 default:'无'" json:"group" default:"无"`
+	Awards   string `gorm:"type:varchar(300); comment:获奖记录 default:'无'" json:"awards" default:"无"`
+	Xueli    string `gorm:"type:varchar(50); comment:求学经历 default:'无'" json:"xueli" default:"无"`
+	Url      string `gorm:"type:varchar(40);comment:头像地址" json:"url" default:"无"`
 }
 
 func (a *Message) TableName() string {
@@ -47,9 +45,9 @@ func (a *Message) TableName() string {
 }
 
 type Feature struct {
-	Name        string `gorm:"primaryKey;not null comment: 风景名称" json:"name" binding:"required"`
-	Description string `gorm:"not null comment:介绍" json:"description" binding:"required"`
-	URL         string `gorm:"not null comment: 资源地址" json:"url" binding:"required"`
+	Name        string `gorm:"primaryKey;not null; comment: 风景名称" json:"name" binding:"required"`
+	Description string `gorm:"not null; comment:介绍" json:"description" binding:"required"`
+	URL         string `gorm:"not null; comment: 资源地址" json:"url" binding:"required"`
 }
 
 func (a *Feature) TableName() string {
@@ -58,8 +56,8 @@ func (a *Feature) TableName() string {
 
 type Comment struct {
 	gorm.Model
-	Name  string `gorm:"not null comment: 评论者"json:"name" binding:"required"`
-	Inner string `gorm:"not null comment:评论内容" json:"inner" binding:"required"`
+	Name  string `gorm:"not null; comment: 评论者"json:"name" binding:"required"`
+	Inner string `gorm:"not null; comment:评论内容" json:"inner" binding:"required"`
 }
 
 func (a *Comment) TableName() string {

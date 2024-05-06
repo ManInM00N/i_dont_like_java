@@ -18,12 +18,9 @@ func Cors() gin.HandlerFunc {
 		c.Header("Access-Control-Allow-Headers", "*")
 		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Cache-Control, Content-Language, Content-Type")
 		c.Header("Access-Control-Allow-Credentials", "true")
-
-		//放行所有OPTIONS方法
 		if method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)
 		}
-		// 处理请求
 		c.Next()
 	}
 }
@@ -69,7 +66,7 @@ func ServeInit() {
 		var msg Message
 		id := c.Param("id")
 		msg.Name = id
-		log.Println(id)
+		log.Println("visit ", id)
 		db.First(&msg)
 
 		c.JSON(200, gin.H{

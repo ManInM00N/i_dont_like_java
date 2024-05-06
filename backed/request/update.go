@@ -13,17 +13,19 @@ import (
 func headchange(c *gin.Context) {
 	var msg Message
 	msg.Name = c.PostForm("name")
-	//log.Println(c.Request.PostFormValue("name"), c.PostForm("name"))
-	file, header, err := c.Request.FormFile("file")
+	log.Println(c.Request.PostFormValue("name"), c.PostForm("name"))
+	file, err := c.FormFile("file")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "file upload failed",
 		})
+		log.Println(err)
 		return
 	}
-
-	out, err := os.Create("fronted/src/assets/images/" + msg.Name + path.Ext(header.Filename))
-	log.Println(out.Name())
+	src, _ := file.Open()
+	defer src.Close()
+	out, err := os.Create("fronted/src/assets/images/" + msg.Name + path.Ext(file.Filename))
+	//log.Println(out.Name())
 	if err != nil {
 		log.Println(err)
 		c.JSON(http.StatusHTTPVersionNotSupported, gin.H{
@@ -32,7 +34,7 @@ func headchange(c *gin.Context) {
 		return
 	}
 	defer out.Close()
-	_, err = io.Copy(out, file)
+	_, err = io.Copy(out, src)
 	if err != nil {
 		log.Println(err)
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
@@ -43,7 +45,7 @@ func headchange(c *gin.Context) {
 	}
 
 	db.First(&msg)
-	msg.Url = msg.Name + path.Ext(header.Filename)
+	msg.Url = msg.Name + path.Ext(file.Filename)
 	db.Save(&msg)
 	c.JSON(200, gin.H{
 		"url": msg.Url,
@@ -54,7 +56,7 @@ func update(c *gin.Context) {
 	//c.BindJSON(&data)
 	var msg Message
 	c.BindJSON(&msg)
-
+	log.Println(msg.Name, " change message")
 	newone := Message{Name: msg.Name}
 
 	db.First(&newone)
@@ -64,7 +66,9 @@ func update(c *gin.Context) {
 	newone.Xueli = msg.Xueli
 	newone.Awards = msg.Awards
 	db.Save(&newone)
-
+	c.JSON(200, gin.H{
+		"message": "success",
+	})
 }
 func Query(c *gin.Context) {
 	require := c.Query("search")

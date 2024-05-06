@@ -12,15 +12,23 @@
           <el-col :span="6"></el-col>
           <el-col :span="6">
             <div align="center">
+              <el-image :src="form.url" :fit="fill" style="height: 100px ;width:100px" />
               <el-upload
-                :action="'/apis/api/headerchange'"
+                action="#"
+                ref="up"
                 :limit="1"
                 :before-upload="beforeUpload"
                 :on-exceed="handleExceed"
+                :auto-upload="false"
+                :http-request="upload"
               >
-
+                <template #trigger>
+                  <el-button type="primary">上传头像</el-button>
+                </template>
               </el-upload>
-              <el-image :src="require('../assets/images/'+form.url)" :fit="fill" style="height: 100px ;width:100px" />
+              <el-button @click="submitUpload">
+                 修改头像
+              </el-button>
             </div>
           </el-col>
           <el-col :span="6"/>
@@ -73,12 +81,13 @@
     </section>
   </el-container>
 </template>
-<script setup>
+<script lang="js" setup>
 import {ref} from "vue";
 import axios from "axios";
 import {useRoute} from "vue-router";
 import {ElMessage} from "element-plus";
 const route = useRoute()
+const up =  ref()
 const form = ref({
   name:'',
   xueli:'',
@@ -93,12 +102,12 @@ function init(){
   axios.get("/apis/user/"+form.value.name).then(response=>{
     console.log(response)
     form.value.name = response.data.name
-    form.value.name = response.data.awards
+    form.value.awards = response.data.awards
     form.value.group = response.data.groups
     form.value.motto = response.data.motto
     form.value.xueli = response.data.xueli
     form.value.interest= response.data.interest
-    form.value.url = response.data.url
+    form.value.url = require("../assets/images/" + response.data.url)
   }).catch(error=>{
     console.log(error)
   })
@@ -133,29 +142,36 @@ function handleExceed(){
 }
 function beforeUpload(file) {
   const isJPG = file.type === "image/jpeg" || file.type == "image/png";
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  const isLt2M = file.size / 1024 / 1024 < 4;
   if (!isJPG) {
     ElMessage.error("上传头像图片只能是 JPG 或 PNG 格式!")
-    return;
+    return false;
   }
   if (!isLt2M) {
     ElMessage.error("上传头像图片大小不能超过 2MB!")
-    return;
+    return false;
   }
-  const fileData = new FormData();
-  fileData.append("avatar", file);
+
+  return true;
+}
+const submitUpload = () => {
+  up.value.submit()
+}
+function upload(file){
+  // const fileData = new FormData();
+  // fileData.append("avatar", file);
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("file", file.file);
   formData.append("name",form.value.name)
-  axios.post("/apis/api/changeheader", formData,{
-    "Content-Type": "multipart/form-data"
+  axios.post("/apis/api/headerchange",formData,{
+    headers:{
+      'Content-Type':'multipart/form-data'
+    }
   }).then(response=>{
-    form.value.url = response.data.url
+    form.value.url = require("../assets/images/"+ response.data.url)
   }).catch(error=>{
     console.log(error)
   })
-  //阻止传到本地浏览器
-  return false;
 }
 init()
 
@@ -165,7 +181,7 @@ init()
 .information {
 
   width: 650px;
-  height: 600px;
+  height: 700px;
   background-color:rgba(255, 255, 255, 0.25);
   margin-top: 5%;
   border-radius: 20px;
