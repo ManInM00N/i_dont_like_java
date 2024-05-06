@@ -12,9 +12,16 @@
           <el-col :span="6"></el-col>
           <el-col :span="6">
             <div align="center">
-              <img src="../assets/images/tx.jpg" alt="" />
-            </div>
+              <el-upload
+                :action="'/apis/api/headerchange'"
+                :limit="1"
+                :before-upload="beforeUpload"
+                :on-exceed="handleExceed"
+              >
 
+              </el-upload>
+              <el-image :src="require('../assets/images/'+form.url)" :fit="fill" style="height: 100px ;width:100px" />
+            </div>
           </el-col>
           <el-col :span="6"/>
           <el-col :span="6"/>
@@ -67,41 +74,45 @@
   </el-container>
 </template>
 <script setup>
-import {reactive} from "vue";
+import {ref} from "vue";
 import axios from "axios";
 import {useRoute} from "vue-router";
+import {ElMessage} from "element-plus";
 const route = useRoute()
-const form = reactive({
+const form = ref({
   name:'',
   xueli:'',
   awards:'',
   interest:'',
   motto:'',
   group:'',
-
+  url:'',
 })
 function init(){
-  form.name = route.params.id
-  axios.get("/apis/user/"+form.name).then(response=>{
+  form.value.name = route.params.id
+  axios.get("/apis/user/"+form.value.name).then(response=>{
     console.log(response)
-    form.name = response.data.name
-    form.awards = response.data.awards
-    form.group = response.data.groups
-    form.motto = response.data.motto
-    form.xueli = response.data.xueli
-    form.interest= response.data.interest
+    form.value.name = response.data.name
+    form.value.name = response.data.awards
+    form.value.group = response.data.groups
+    form.value.motto = response.data.motto
+    form.value.xueli = response.data.xueli
+    form.value.interest= response.data.interest
+    form.value.url = response.data.url
   }).catch(error=>{
     console.log(error)
   })
 }
+// function changeHeader(param){
+// }
 function update(){
   axios.post("/apis/api/update",{
-    name:form.name,
-    xueli:form.xueli,
-    interest:form.interest,
-    motto:form.motto,
-    group:form.group,
-    awards:form.awards,
+    name:form.value.name,
+    xueli:form.value.xueli,
+    interest:form.value.interest,
+    motto:form.value.motto,
+    group:form.value.group,
+    awards:form.value.awards,
   },{
     headers:{
       'Content-Type':'application/json'
@@ -109,13 +120,43 @@ function update(){
   }).then((response)=>{
     console.log(response)
     if (response.status===200){
-      console.log("goto",form.name)
+      console.log("goto",form.value.name)
     }
   }).catch((error)=>{
     console.log(error)
   })
 }
+function handleExceed(){
+  ElMessage.warning("超出最大上传文件数量的限制！")
+  return false;
 
+}
+function beforeUpload(file) {
+  const isJPG = file.type === "image/jpeg" || file.type == "image/png";
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isJPG) {
+    ElMessage.error("上传头像图片只能是 JPG 或 PNG 格式!")
+    return;
+  }
+  if (!isLt2M) {
+    ElMessage.error("上传头像图片大小不能超过 2MB!")
+    return;
+  }
+  const fileData = new FormData();
+  fileData.append("avatar", file);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("name",form.value.name)
+  axios.post("/apis/api/changeheader", formData,{
+    "Content-Type": "multipart/form-data"
+  }).then(response=>{
+    form.value.url = response.data.url
+  }).catch(error=>{
+    console.log(error)
+  })
+  //阻止传到本地浏览器
+  return false;
+}
 init()
 
 </script>

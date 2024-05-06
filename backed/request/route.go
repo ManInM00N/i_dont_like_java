@@ -56,6 +56,7 @@ func ServeInit() {
 			SendOut(data["email"].(string))
 		}
 	})
+	Api.POST("/headerchange", headchange)
 	Api.POST("/login", Login)
 	Api.POST("/update", update)
 	Api.POST("/register", Register)
@@ -78,6 +79,7 @@ func ServeInit() {
 			"xueli":    msg.Xueli,
 			"awards":   msg.Awards,
 			"groups":   msg.Group,
+			"url":      msg.Url,
 		})
 	})
 

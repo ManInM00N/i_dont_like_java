@@ -39,6 +39,7 @@ type Message struct {
 	Group    string `gorm:"type:varchar(100);not null comment:社团 default:'无'" json:"group" default:"无"`
 	Awards   string `gorm:"type:varchar(300);not null comment:获奖记录 default:'无'" json:"awards" default:"无"`
 	Xueli    string `gorm:"type:varchar(50);not null comment:求学经历 default:'无'" json:"xueli" default:"无"`
+	Url      string `gorm:"" json:"url" default:"无"`
 }
 
 func (a *Message) TableName() string {

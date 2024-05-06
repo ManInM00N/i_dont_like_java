@@ -3,9 +3,52 @@ package request
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"io"
 	"log"
+	"net/http"
+	"os"
+	"path"
 )
 
+func headchange(c *gin.Context) {
+	var msg Message
+	msg.Name = c.PostForm("name")
+	//log.Println(c.Request.PostFormValue("name"), c.PostForm("name"))
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "file upload failed",
+		})
+		return
+	}
+
+	out, err := os.Create("fronted/src/assets/images/" + msg.Name + path.Ext(header.Filename))
+	log.Println(out.Name())
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusHTTPVersionNotSupported, gin.H{
+			"message": "path not found",
+		})
+		return
+	}
+	defer out.Close()
+	_, err = io.Copy(out, file)
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusUnprocessableEntity, gin.H{
+			"message": "file load failed",
+		})
+
+		return
+	}
+
+	db.First(&msg)
+	msg.Url = msg.Name + path.Ext(header.Filename)
+	db.Save(&msg)
+	c.JSON(200, gin.H{
+		"url": msg.Url,
+	})
+}
 func update(c *gin.Context) {
 	//data := make(map[string]interface{})
 	//c.BindJSON(&data)

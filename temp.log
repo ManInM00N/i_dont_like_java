@@ -500,3 +500,25 @@
 仙山湖景区由仙山和仙湖两部分组成。仙山高162米，山型犹如日本的富士山，山虽不高却能俯仰三省，山虽不广却满山苍翠，充满灵气。仙湖位于仙山一侧，这里有水鸭子、白鹭等，甚至还有非常珍稀的天鹅。
 湖州仙山湖景区拥有浙北地区最长的堤坝、最大的湿地，这里水面平静、芦苇密布生态环境优越，是鸟的乐园。仙山湖的自然环境优美，可以观看到罕见的独特自然生态现象。"
  湖州仙山.jpg} {湖州粽子 端午节马上到了，今年就试一试湖州粽子。历史上湖州是粽子的第一故乡！湖州粽子的最大特点便是里头的馅料特别的丰富，细长的粽身不但受热更均匀，而且每一口都是饱满的米粒和馅料。 湖州粽子.png}]
+2024/05/06 14:55:04 dial tcp 127.0.0.1:6379: connectex: No connection could be made because the target machine actively refused it.
+2024/05/06 14:55:43 unable to open tcp connection with host 'localhost:1433': dial tcp [::1]:1433: connectex: No connection could be made because the target machine actively refused it.
+2024/05/06 15:16:12 LeeSeYu LeeSeYu
+2024/05/06 15:16:12 open ../../fronted/src/assets/images/LeeSeYu.jpg: The system cannot find the path specified.
+2024/05/06 15:18:57 LeeSeYu LeeSeYu
+2024/05/06 15:18:57 open ../fronted/src/assets/images/LeeSeYu.jpg: The system cannot find the path specified.
+2024/05/06 15:24:18 LeeSeYu LeeSeYu
+2024/05/06 15:28:31 fronted/src/assets/images/LeeSeYu.jpg
+2024/05/06 15:29:39 fronted/src/assets/images/1234.jpg
+2024/05/06 15:30:08 1234
+2024/05/06 15:34:25 1234
+2024/05/06 15:39:29 1234
+2024/05/06 15:39:45 1234
+2024/05/06 15:48:01 1234
+2024/05/06 15:48:03 1234
+2024/05/06 15:48:07 1234
+2024/05/06 15:51:36 1234
+2024/05/06 15:51:39 1234
+2024/05/06 15:53:53 1234
+2024/05/06 15:53:53 1234
+2024/05/06 15:53:55 1234
+2024/05/06 15:54:03 1234

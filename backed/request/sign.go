@@ -123,6 +123,7 @@ func Register(c *gin.Context) {
 	db.Create(&newuer)
 	newMsg := Message{
 		Name: data.Name,
+		Url:  data.Name + ".jpg",
 	}
 	db.Create(&newMsg)
 	c.JSON(http.StatusOK, gin.H{
