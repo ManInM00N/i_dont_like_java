@@ -37,7 +37,13 @@ func Login(c *gin.Context) {
 	}
 	var is Account
 	is.Name = data["name"].(string)
-	db.First(&is)
+	err := db.First(&is).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    500,
+			"message": "账号或密码错误",
+		})
+	}
 	isPassword := bcrypt.CompareHashAndPassword([]byte(is.Password), []byte(data["password"].(string)))
 	if isPassword != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{

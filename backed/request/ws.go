@@ -7,17 +7,15 @@ import (
 	"net/http"
 )
 
-//	func WsInit() {
-//		R.
-//	}
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
-}
+var (
+	upgrader = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
+)
 
 func websocketHandler(c *gin.Context) {
-	// 升级 HTTP 连接为 WebSocket 连接
 	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)
@@ -33,12 +31,9 @@ func websocketHandler(c *gin.Context) {
 			break
 		}
 
-		// 处理客户端的请求并调用 LL Model
 		userInput := string(msg)
-		llmResponse := callLLModel(userInput)
 
-		// 将 LL Model 的响应发送给客户端
-		err = ws.WriteMessage(websocket.TextMessage, []byte(llmResponse))
+		err = ws.WriteMessage(websocket.TextMessage, []byte(userInput+" txt"))
 		if err != nil {
 			log.Println(err)
 			break

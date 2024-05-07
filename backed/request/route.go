@@ -1,7 +1,9 @@
 package request
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 	"log"
 	. "main/binary"
 	"net/http"
@@ -59,9 +61,7 @@ func ServeInit() {
 	Api.POST("/register", Register)
 	Api.POST("/comment", ToComment)
 	Api.GET("/comment", GetComments)
-	Api.GET("gptquery", func(context *gin.Context) {
-
-	})
+	Api.GET("/ws", websocketHandler)
 	R.GET("/HomeTown", Query)
 	Users := R.Group("/user")
 	Users.GET("/:id", func(c *gin.Context) {
@@ -70,8 +70,16 @@ func ServeInit() {
 		id := c.Param("id")
 		msg.Name = id
 		log.Println("visit ", id)
-		db.First(&msg)
-
+		err := db.First(&msg).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Println(err)
+			c.JSON(404, gin.H{
+				"code":    404,
+				"message": "User not found",
+			})
+			c.Redirect(404, "/")
+			return
+		}
 		c.JSON(200, gin.H{
 			"name":     msg.Name,
 			"motto":    msg.Motto,

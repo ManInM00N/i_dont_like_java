@@ -86,6 +86,7 @@ import {ref} from "vue";
 import axios from "axios";
 import {useRoute} from "vue-router";
 import {ElMessage} from "element-plus";
+import router from "@/router";
 const route = useRoute()
 const up =  ref()
 const form = ref({
@@ -100,6 +101,7 @@ const form = ref({
 function init(){
   form.value.name = route.params.id
   axios.get("/apis/user/"+form.value.name).then(response=>{
+
     console.log(response)
     form.value.name = response.data.name
     form.value.awards = response.data.awards
@@ -110,6 +112,10 @@ function init(){
     form.value.url = require("../assets/images/" + response.data.url)
   }).catch(error=>{
     console.log(error)
+
+    if (error.response.status===404){
+      router.replace("/")
+    }
   })
 }
 // function changeHeader(param){
@@ -168,6 +174,7 @@ function upload(file){
       'Content-Type':'multipart/form-data'
     }
   }).then(response=>{
+
     form.value.url = require("../assets/images/"+ response.data.url)
   }).catch(error=>{
     console.log(error)
