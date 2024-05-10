@@ -24,7 +24,6 @@ func websocketHandler(c *gin.Context) {
 	defer ws.Close()
 
 	for {
-		// 从 WebSocket 连接读取客户端发送的消息
 		_, msg, err := ws.ReadMessage()
 		if err != nil {
 			log.Println(err)

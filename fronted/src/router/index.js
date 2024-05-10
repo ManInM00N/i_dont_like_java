@@ -6,6 +6,7 @@ import HomeTown from "../components/HomeTown.vue";
 import CommentBoard from "@/components/CommentBoard.vue";
 import sign_up from "@/components/sign_up.vue";
 import UserMsg from "@/components/UserMsg.vue";
+import ChatRoom from "@/components/ChatRoom.vue";
 const router = createRouter({
     history: createWebHashHistory(),
     routes:[
@@ -65,7 +66,14 @@ const router = createRouter({
                 keepAlive :true,
                 refresh: true,
             }
-        },
+        },{
+            path:'/chat',
+            component : ChatRoom,
+            meta:{
+                keepAlive :true,
+                refresh: true,
+            }
+        }
 
 
 
