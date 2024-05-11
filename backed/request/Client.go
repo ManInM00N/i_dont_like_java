@@ -1,13 +1,10 @@
 package request
 
 import (
-	"crypto/md5"
 	"encoding/json"
-	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"log"
-	"net/http"
+	"strings"
 	"time"
 )
 
@@ -62,14 +59,20 @@ func (c *Client) Read() {
 		_, data, err := c.Socket.ReadMessage()
 		//var data WsMessage
 		//err := c.Socket.ReadJSON(&data)
+
 		if err != nil {
+			if strings.Contains(err.Error(), "websocket: close 1005") || strings.Contains(err.Error(), "websocket: close 1001") {
+				err = nil
+				log.Println(c.UserId, " close connection")
+				return
+			}
 			log.Fatalln(err)
 			break
 		}
 		var msg WsMessage
 		err = json.Unmarshal(data, &msg)
 		var newMsg Send
-		//log.Println(msg.Data.(map[string]interface{}))
+		log.Println(msg.Data.(map[string]interface{}))
 		newMsg.Name = (msg.Data.(map[string]interface{}))["name"].(string)
 		newMsg.Inner = (msg.Data.(map[string]interface{}))["inner"].(string)
 		db.Create(&newMsg)
@@ -141,7 +144,6 @@ func (manager *ClientManager) Start() {
 	for {
 		select {
 		case conn := <-Manager.Register:
-			log.Println(conn.ID)
 			Manager.Clients[conn.ID] = conn
 			count := len(Manager.Clients)
 			Manager.InitSend(conn, count)
@@ -190,32 +192,4 @@ func (manager *ClientManager) Quit() {
 			manager.Broadcast <- resp
 		}
 	}
-}
-func WebSocketHandle(c *gin.Context) {
-	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		http.NotFound(c.Writer, c.Request)
-		log.Println(err)
-		return
-	}
-	userid := c.Query("name")
-	ip := c.ClientIP()
-	//ua := c.GetHeader("User-Age?nt")
-	id := ip + userid
-	idMd5 := fmt.Sprintf("%x", md5.Sum([]byte(id)))
-	client := &Client{
-		ID:         idMd5,
-		Socket:     conn,
-		Send:       make(chan []byte, 10),
-		UserId:     userid,
-		Start:      time.Now(),
-		ExpireTime: time.Minute * 10,
-	}
-	Manager.Register <- client
-	go client.Write()
-	go client.Check()
-	go client.Read()
-	//c.JSON(200, gin.H{
-	//	"name": userid,
-	//})
 }

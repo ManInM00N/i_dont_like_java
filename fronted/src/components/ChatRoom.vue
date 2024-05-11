@@ -3,9 +3,12 @@
 
   <div  class="information" >
     <el-main>
-      <div v-for="(item,idx) in dialog" :key="idx">
-        {{item.name}}
+      <div v-for="(item,idx) in dialog" :key="idx" style="display: flex">
         <div class="dialog">
+          {{item.name}}
+
+        </div>
+        <div class="chatBox-left chatBox">
           {{item.inner}}
         </div>
       </div>
@@ -44,7 +47,8 @@
   </div>
 </template>
 <script setup>
-import {ref} from "vue";
+import {onBeforeUnmount, ref} from "vue";
+import {ElMessage} from "element-plus";
 
 
 const inner = ref('')
@@ -61,7 +65,7 @@ const rules = ref({
   ],
 })
 const startWebSocket = () => {
-  ws.value = new WebSocket(`/apis/api/ws?name=${form.value.name}`);
+  ws.value = new WebSocket("ws://10.5.51.9:7234/api/ws?name="+form.value.name.toString());
 
   ws.value.onopen = () => {
     console.log('WebSocket connected');
@@ -69,9 +73,10 @@ const startWebSocket = () => {
 
   ws.value.onmessage = (event) => {
     // res.value = event.data;
-    dialog.value = event.data;
+    handleMessage(JSON.parse(event.data));
   };
   ws.value.onclose = () => {
+    ElMessage.error("远程主机关闭")
     console.log('WebSocket closed');
   };
 
@@ -79,6 +84,20 @@ const startWebSocket = () => {
     console.error('WebSocket error:', error);
   };
 };
+const handleMessage = (data) => {
+  if (data && data.type === 2 && data.data) {
+    dialog.value=data.data;
+  }else if (data.type === 3 && data.data){
+    dialog.value.push(data.data);
+  }
+  console.log(data.type, data.data,data);
+  console.log(dialog.value);
+};
+onBeforeUnmount(()=>{
+  if (ws.value) {
+    ws.value.close();
+  }
+})
 function comment(){
   if (!logined.value){
     centerDialogVisible.value = true;
@@ -88,10 +107,13 @@ function comment(){
     form.value.name ="匿名";
   }
   ws.value.send(
-      {
+      JSON.stringify({
         type:3,
-        message:inner.value,
-      }
+        data:{
+          name:form.value.name,
+          inner:inner.value,
+        },
+      })
   )
   inner.value='';
 }
@@ -116,6 +138,28 @@ function comment(){
 .dialog{
   display:inline-block;
   padding:5px;
-  background: @sliver
+  width: 60px;
+  //background: @sliver;
+  margin: 5px 5px 5px 5px;
+}
+.chatBox-left::before{
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -20px;
+  top:5px;
+  border: 10px solid;
+  border-color: transparent #bc3b4a transparent transparent ;
+}
+.chatBox{
+  position: relative;
+  margin:12px;
+  padding:5px 8px;
+  word-break: break-all;
+  background: #ffffff;
+  border: 1px solid #989898;
+  border-radius: 5px;
+  max-width:180px;
 }
 </style>
