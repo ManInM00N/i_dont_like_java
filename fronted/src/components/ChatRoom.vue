@@ -1,25 +1,6 @@
 
 <template>
-  <el-dialog
-      v-model="centerDialogVisible"
-      title="用户身份"
-      width="500"
-      align-center
-  >
-    <el-form :model="form" :rules="rules">
-      <el-form-item label="昵称" label-width="140px" prop="name">
-        <el-input v-model="form.name" autocomplete="off" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="centerDialogVisible = false,logined=true">
-          Confirm
-        </el-button>
-      </div>
-    </template>
-  </el-dialog>
+
   <div  class="information" >
     <el-main>
       <div v-for="(item,idx) in dialog" :key="idx">
@@ -39,11 +20,31 @@
         </el-input>
 
       </el-card>
+      <el-dialog
+          v-model="centerDialogVisible"
+          title="用户身份"
+          width="500"
+          align-center
+      >
+        <el-form :model="form" :rules="rules">
+          <el-form-item label="昵称" label-width="140px" prop="name">
+            <el-input v-model="form.name" autocomplete="off" />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="centerDialogVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="centerDialogVisible = false,logined=true,startWebSocket()">
+              Confirm
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
     </el-main>
   </div>
 </template>
 <script setup>
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 
 
 const inner = ref('')
@@ -68,10 +69,7 @@ const startWebSocket = () => {
 
   ws.value.onmessage = (event) => {
     // res.value = event.data;
-    dialog.value.push({
-      name:event.data.name,
-      inner:event.data.inner,
-    })
+    dialog.value = event.data;
   };
   ws.value.onclose = () => {
     console.log('WebSocket closed');
@@ -81,9 +79,6 @@ const startWebSocket = () => {
     console.error('WebSocket error:', error);
   };
 };
-onMounted(()=>{
-  startWebSocket()
-})
 function comment(){
   if (!logined.value){
     centerDialogVisible.value = true;

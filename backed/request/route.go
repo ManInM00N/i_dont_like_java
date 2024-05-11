@@ -90,6 +90,8 @@ func ServeInit() {
 			"url":      msg.Url,
 		})
 	})
-
+	go Manager.BroadcastSend()
+	go Manager.Start()
+	go Manager.Quit()
 	R.Use(Cors())
 }

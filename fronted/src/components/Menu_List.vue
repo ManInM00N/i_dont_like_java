@@ -80,7 +80,8 @@ const items = ref([
   {id : 2, iconmsg : "ChatDotRound",key:"CommentBoard",index:"/CommentBoard"},
   {id : 3, iconmsg:"Avatar",key:"Myself",index:"/MyselfMsg"},
   {id:4,iconmsg: "Promotion",key:"HomeTown",index:"/HomeTown"},
-  {id:5,iconmsg: "User",key:"Sign in",index:"/login_in"},
+  {id:5,iconmsg:"ChatDotSquare",key:"chat",index:"/chat"},
+  {id:6,iconmsg: "User",key:"Sign in",index:"/login_in"},
 
 ])
 
