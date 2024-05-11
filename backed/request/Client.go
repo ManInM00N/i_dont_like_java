@@ -1,4 +1,4 @@
-package binary
+package request
 
 import (
 	"crypto/md5"
@@ -35,6 +35,15 @@ var (
 	Manager ClientManager
 )
 
+func ChatRecord() {
+
+}
+func ChatHistoryList() []Send {
+	var res []Send
+	db.Find(&res)
+	return res
+}
+
 // Read 读取客户端发送过来的消息
 func (c *Client) Read() {
 	// 出现故障后把当前客户端注销
@@ -68,7 +77,7 @@ func (c *Client) Read() {
 			c.Send <- resp
 		case 2:
 			// 获取消息历史记录
-			_data := ChatRecord() //你的获取消息记录的操作
+			_data := ChatHistoryList() //你的获取消息记录的操作
 			resp, _ := json.Marshal(&WsMessage{Type: 2, Data: _data})
 			c.Send <- resp
 		case 3:
@@ -135,7 +144,7 @@ func (manager *ClientManager) InitSend(cur *Client, count int) {
 	resp, _ := json.Marshal(&WsMessage{Type: 1, Data: count})
 	Manager.Broadcast <- resp
 
-	_data := YouChatHistoryList() //获取聊天室历史消息记录操作
+	_data := ChatHistoryList() //获取聊天室历史消息记录操作
 	resp, _ = json.Marshal(&WsMessage{Type: 2, Data: _data})
 	cur.Send <- resp
 }

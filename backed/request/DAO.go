@@ -63,6 +63,14 @@ type Comment struct {
 func (a *Comment) TableName() string {
 	return "comment"
 }
+
+type Send struct {
+	gorm.Model
+	Inner string `gorm:"inner"json:"inner"binding:"inner"`
+	Name  string `gorm:"name" json:"name"binding:"name"`
+}
+
+func (a *Send) TableName() string { return "send" }
 func DBInit() {
 	var err error
 	db, err = gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
@@ -77,7 +85,7 @@ func DBInit() {
 	sqlDB.SetMaxOpenConns(100)
 	//  设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(10 * time.Second) // 10秒钟
-	db.AutoMigrate(&Account{}, &Comment{}, &Feature{}, &Message{})
+	db.AutoMigrate(&Account{}, &Comment{}, &Feature{}, &Message{}, &Send{})
 	if !db.Migrator().HasTable(&Account{}) {
 		os.Exit(17)
 	}

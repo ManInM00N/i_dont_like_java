@@ -10,6 +10,7 @@ module.exports={
       '/apis': {
         target: 'http://127.0.0.1:7234',
         changeOrigin: true,
+        ws: true,
         pathRewrite: {
           '^/apis': ''
         }
