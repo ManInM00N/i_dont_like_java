@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"log"
-	"net/http"
 	"time"
 )
 
@@ -52,19 +51,21 @@ func (c *Client) Read() {
 		Manager.UnRegister <- c
 	}()
 	for {
-		_, data, err := c.Socket.ReadMessage()
+		//_, data, err := c.Socket.ReadMessage()
+		var data WsMessage
+		err := c.Socket.ReadJSON(&data)
 		if err != nil {
 			log.Fatalln(err)
 			break
 		}
-		var msg WsMessage
-		err = json.Unmarshal(data, &msg)
-		if err != nil {
-			log.Println(err)
-			break
-		}
-
-		switch msg.Type {
+		//var msg WsMessage
+		//err = json.Unmarshal(data, &msg)
+		//if err != nil {
+		//	log.Println(err)
+		//	break
+		//}
+		//log.Println(msg.Data.(string))
+		switch data.Type {
 		case 6:
 			// 如果是心跳监测消息（利用心跳监测来判断对应客户端是否在线）
 			resp, _ := json.Marshal(&WsMessage{Type: 6, Data: "pong"})
@@ -82,7 +83,8 @@ func (c *Client) Read() {
 			c.Send <- resp
 		case 3:
 			// 发送文本消息
-			resp, _ := json.Marshal(&WsMessage{Type: 3, Data: msg.Data})
+			resp, _ := json.Marshal(&WsMessage{Type: 3, Data: data.Data})
+
 			Manager.Broadcast <- resp
 
 		case 4:
@@ -170,33 +172,33 @@ func (manager *ClientManager) Quit() {
 	}
 }
 func WebSocketHandle(c *gin.Context) {
-	conn, err := (&websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool { return true },
-	}).Upgrade(c.Writer, c.Request, nil)
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		http.NotFound(c.Writer, c.Request)
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
 		log.Println(err)
 		return
 	}
-	userid := c.Values["a_userid"]
+	userid := c.Query("name")
 	ip := c.ClientIP()
-	if err != nil {
-		http.NotFound(c.Writer, c.Request)
-		log.Println(err)
-		return
-	}
 	ua := c.GetHeader("User-Agent")
 	id := ip + ua
 	idMd5 := fmt.Sprintf("%x", md5.Sum([]byte(id)))
 	client := &Client{
-		ID:     idMd5,
-		Socket: conn, Send: make(chan []byte),
+		ID:         idMd5,
+		Socket:     conn,
+		Send:       make(chan []byte),
 		UserId:     userid,
 		Start:      time.Now(),
 		ExpireTime: time.Minute * 1,
 	}
 	Manager.Register <- client
-	go client.Read() // 以goroutine的方式调用Client的Read、Write、Check方法
+	log.Println(userid)
 	go client.Write()
 	go client.Check()
+	go client.Read() // 以goroutine的方式调用Client的Read、Write、Check方法
+	c.JSON(200, gin.H{
+		"name": userid,
+	})
 }
