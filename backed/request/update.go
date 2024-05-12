@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io"
-	"log"
+	"main/binary"
 	"net/http"
 	"os"
 	"path"
@@ -13,13 +13,13 @@ import (
 func headchange(c *gin.Context) {
 	var msg Message
 	msg.Name = c.PostForm("name")
-	log.Println(c.Request.PostFormValue("name"), c.PostForm("name"))
+	binary.InfoLog.Println(c.Request.PostFormValue("name"), c.PostForm("name"))
 	file, err := c.FormFile("file")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "file upload failed",
 		})
-		log.Println(err)
+		binary.DebugLog.Println(err)
 		return
 	}
 	src, _ := file.Open()
@@ -27,7 +27,7 @@ func headchange(c *gin.Context) {
 	out, err := os.Create("fronted/src/assets/images/" + msg.Name + path.Ext(file.Filename))
 	//log.Println(out.Name())
 	if err != nil {
-		log.Println(err)
+		binary.DebugLog.Println(err)
 		c.JSON(http.StatusHTTPVersionNotSupported, gin.H{
 			"message": "path not found",
 		})
@@ -36,7 +36,7 @@ func headchange(c *gin.Context) {
 	defer out.Close()
 	_, err = io.Copy(out, src)
 	if err != nil {
-		log.Println(err)
+		binary.DebugLog.Println(err)
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"message": "file load failed",
 		})
@@ -56,7 +56,7 @@ func update(c *gin.Context) {
 	//c.BindJSON(&data)
 	var msg Message
 	c.BindJSON(&msg)
-	log.Println(msg.Name, " change message")
+	binary.InfoLog.Println(msg.Name, " change message")
 	newone := Message{Name: msg.Name}
 
 	db.First(&newone)
@@ -73,11 +73,11 @@ func update(c *gin.Context) {
 func Query(c *gin.Context) {
 	require := c.Query("search")
 	ip := c.ClientIP()
-	log.Println(ip, require)
+	binary.InfoLog.Println(ip, require)
 	if len(require) > 0 {
 		var repost []Feature
 		db.Where("name like ?", fmt.Sprintf("%%%s%%", require)).Limit(10).Find(&repost)
-		log.Println(repost)
+		binary.InfoLog.Println(repost)
 		c.IndentedJSON(200, gin.H{
 			"message": "ok",
 			"res":     repost,
@@ -98,7 +98,7 @@ func ToComment(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"res": newmsg,
 	})
-	log.Println(newmsg)
+	binary.InfoLog.Println(newmsg.Name, " : ", newmsg.Inner)
 
 }
 func GetComments(c *gin.Context) {
@@ -108,5 +108,5 @@ func GetComments(c *gin.Context) {
 		"message": "ok",
 		"res":     res,
 	})
-	log.Println(res)
+	binary.InfoLog.Println(res)
 }

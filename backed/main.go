@@ -6,12 +6,11 @@ import (
 )
 
 func main() {
+	ConfigInit()
 	LogInit()
 	RedisInit()
 	DBInit()
 	ServeInit()
 	defer F.Close()
-	//go func() {
 	R.Run(":7234")
-	//}()
 }

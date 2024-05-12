@@ -1,0 +1,7 @@
+
+use_redis: false # 使用redis
+redisport : 6379 #redis port
+sqlport: 1433 # default
+sqlusername: sa # 账号
+sqlpassword: czp233 # 密码
+sqlbase: gorm # 数据库名称

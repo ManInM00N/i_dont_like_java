@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"log"
 	"main/binary"
 	"net/http"
 )
@@ -69,7 +68,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	log.Println(data.Msg())
+	binary.InfoLog.Println(data.Msg())
 
 	if !Rule_name.MatchString(data.Name) {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
@@ -104,21 +103,24 @@ func Register(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/register")
 		return
 	}
-	if !binary.IsTrue(data.Email, data.Code) {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"code":    500,
-			"message": "验证码错误",
-		})
-		c.Redirect(http.StatusFound, "/register")
-		return
+	if binary.Setting.UseRedis {
+		if !binary.IsTrue(data.Email, data.Code) {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code":    500,
+				"message": "验证码错误",
+			})
+			c.Redirect(http.StatusFound, "/register")
+			return
+		}
 	}
+
 	newuer := Account{
 		Name:     data.Name,
 		Password: string(hashedPassword),
 		Email:    data.Email,
 	}
 	if err := db.First(&newuer).Error; !errors.Is(err, gorm.ErrRecordNotFound) {
-		log.Println(errors.Is(err, gorm.ErrRecordNotFound))
+		//log.Println(errors.Is(err, gorm.ErrRecordNotFound))
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code":    500,
 			"message": "账号已存在",

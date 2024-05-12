@@ -28,6 +28,9 @@ var ctx = context.Background()
 var Rdb *redis.Client
 
 func RedisInit() {
+	if !Setting.UseRedis {
+		return
+	}
 	Rdb = redis.NewClient(&redis.Options{
 		Addr:     "127.0.0.1:6379",
 		Password: "", // no password set
@@ -37,7 +40,7 @@ func RedisInit() {
 	defer cancel()
 	_, err := Rdb.Ping(ctx).Result()
 	if err != nil {
-		log.Println(err)
+		DebugLog.Println(err)
 		panic(err)
 	}
 }
@@ -45,9 +48,12 @@ func SendOut(dir string) {
 	rand.Seed(time.Now().Unix())
 	code := fmt.Sprintf("%06v", rand.Intn(600000))
 	newmsg := fmt.Sprintf(message, code)
-	err := Rdb.SetEx(ctx, dir, code, time.Minute*5).Err()
-	if err != nil {
-		log.Fatalln(err)
+	if Setting.UseRedis {
+
+		err := Rdb.SetEx(ctx, dir, code, time.Minute*5).Err()
+		if err != nil {
+			DebugLog.Fatalln(err)
+		}
 	}
 	m := gomail.NewMessage()
 	m.SetBody("text/html", newmsg)
@@ -64,14 +70,14 @@ func SendOut(dir string) {
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
 	if err := d.DialAndSend(m); err != nil {
-		log.Println(err)
+		DebugLog.Println(err)
 		panic(err)
 	}
 }
 func IsTrue(dir string, code string) bool {
 	coderow, err := Rdb.Get(ctx, dir).Result()
 	if err != nil && err != redis.Nil {
-		log.Fatalln(err)
+		DebugLog.Fatalln(err)
 	}
 	log.Println(code, coderow)
 	if coderow != "" && coderow == code {

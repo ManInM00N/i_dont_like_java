@@ -3,7 +3,7 @@ package request
 import (
 	"encoding/json"
 	"github.com/gorilla/websocket"
-	"log"
+	"main/binary"
 	"strings"
 	"time"
 )
@@ -41,12 +41,10 @@ var (
 	}
 )
 
-func ChatRecord() {
-
-}
 func ChatHistoryList() []Send {
 	var res []Send
 	db.Find(&res)
+	binary.InfoLog.Println(res)
 	return res
 }
 
@@ -63,21 +61,21 @@ func (c *Client) Read() {
 		if err != nil {
 			if strings.Contains(err.Error(), "websocket: close 1005") || strings.Contains(err.Error(), "websocket: close 1001") {
 				err = nil
-				log.Println(c.UserId, " close connection")
+				binary.InfoLog.Println(c.UserId, " close connection")
 				return
 			}
-			log.Fatalln(err)
+			binary.DebugLog.Fatalln(err)
 			break
 		}
 		var msg WsMessage
 		err = json.Unmarshal(data, &msg)
 		var newMsg Send
-		log.Println(msg.Data.(map[string]interface{}))
+		binary.InfoLog.Println(msg.Data.(map[string]interface{}))
 		newMsg.Name = (msg.Data.(map[string]interface{}))["name"].(string)
 		newMsg.Inner = (msg.Data.(map[string]interface{}))["inner"].(string)
-		db.Create(&newMsg)
+		err = db.Create(&newMsg).Error
 		if err != nil {
-			log.Println(err)
+			binary.DebugLog.Println(err)
 			break
 		}
 		switch msg.Type {
@@ -115,14 +113,14 @@ func (c *Client) Write() {
 			if !ok {
 				err := c.Socket.WriteMessage(websocket.CloseMessage, []byte{})
 				if err != nil {
-					log.Println(err)
+					binary.DebugLog.Println(err)
 					return
 				}
 				return
 			}
 			err := c.Socket.WriteMessage(websocket.TextMessage, msg)
 			if err != nil {
-				log.Println(err)
+				binary.DebugLog.Println(err)
 				return
 			}
 		}
@@ -172,13 +170,13 @@ func (manager *ClientManager) BroadcastSend() {
 			var tt WsMessage
 			err := json.Unmarshal(msg, &tt)
 			if err != nil {
-				log.Println(err)
+				binary.DebugLog.Println(err)
 			}
-			log.Println("start broadcast", len(Manager.Clients))
+			binary.InfoLog.Println("start broadcast", len(Manager.Clients))
 
 			for _, conn := range Manager.Clients {
 				conn.Send <- msg
-				log.Println("post to", conn.UserId.(string))
+				binary.InfoLog.Println("post to", conn.UserId.(string))
 			}
 		}
 	}

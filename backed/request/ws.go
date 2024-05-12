@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"log"
+	"main/binary"
 	"net/http"
 	"time"
 )
@@ -22,7 +22,7 @@ func WebSocketHandle(c *gin.Context) {
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		http.NotFound(c.Writer, c.Request)
-		log.Println(err)
+		binary.DebugLog.Println(err)
 		return
 	}
 	userid := c.Query("name")

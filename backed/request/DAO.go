@@ -1,9 +1,10 @@
 package request
 
 import (
+	"fmt"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
-	"log"
+	"main/binary"
 	"os"
 	"regexp"
 	"time"
@@ -17,7 +18,7 @@ var (
 )
 
 const (
-	dsn = "sqlserver://sa:czp233@localhost:1433?database=gorm"
+	dsn = `sqlserver://%s:%s@localhost:%s?database=%s`
 )
 
 type Account struct {
@@ -73,9 +74,10 @@ type Send struct {
 func (a *Send) TableName() string { return "send" }
 func DBInit() {
 	var err error
-	db, err = gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
+	var DSN = fmt.Sprintf(dsn, binary.Setting.Sqlusername, binary.Setting.Sqlpassword, binary.Setting.Sqlport, binary.Setting.Sqlbase)
+	db, err = gorm.Open(sqlserver.Open(DSN), &gorm.Config{})
 	if err != nil {
-		log.Fatalln(err)
+		binary.DebugLog.Fatalln(err)
 		os.Exit(15)
 	}
 	sqlDB, _ := db.DB()

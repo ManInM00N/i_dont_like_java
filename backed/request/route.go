@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"log"
 	. "main/binary"
 	"net/http"
 )
@@ -69,10 +68,10 @@ func ServeInit() {
 		var msg Message
 		id := c.Param("id")
 		msg.Name = id
-		log.Println("visit ", id)
+		InfoLog.Println("visit ", id)
 		err := db.First(&msg).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			log.Println(err)
+			DebugLog.Println(err)
 			c.JSON(404, gin.H{
 				"code":    404,
 				"message": "User not found",

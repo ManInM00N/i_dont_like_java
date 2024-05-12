@@ -71,7 +71,7 @@ const router = createRouter({
             component : ChatRoom,
             meta:{
                 keepAlive :true,
-                refresh: true,
+                refresh: false,
             }
         }
 
