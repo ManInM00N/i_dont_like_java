@@ -77,14 +77,7 @@ function comment(){
 </script>
 
 <style scoped lang="less">
-.Title{
-  margin: auto;
-  text-align: center;
-  margin-top: 10px;
-  font-size: 30px;
-  color: @light-pink;
-  text-shadow:2px 2px #777;
-}
+
 .information {
 
   width: 650px;

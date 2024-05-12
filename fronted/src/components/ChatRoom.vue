@@ -122,6 +122,7 @@ function comment(){
 
 <style scoped lang="less">
 @import "../assets/style/Color.less";
+@import "../assets/style/variable.less";
 .information {
 
   width: 650px;
@@ -135,31 +136,5 @@ function comment(){
   margin-left: calc(50% - 325px);
   margin-right: calc(50% - 325px);
 }
-.dialog{
-  display:inline-block;
-  padding:5px;
-  width: 60px;
-  //background: @sliver;
-  margin: 5px 5px 5px 5px;
-}
-.chatBox-left::before{
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -20px;
-  top:5px;
-  border: 10px solid;
-  border-color: transparent #bc3b4a transparent transparent ;
-}
-.chatBox{
-  position: relative;
-  margin:12px;
-  padding:5px 8px;
-  word-break: break-all;
-  background: #ffffff;
-  border: 1px solid #989898;
-  border-radius: 5px;
-  max-width:180px;
-}
+
 </style>

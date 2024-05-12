@@ -158,26 +158,7 @@ function cg1(now){
 </script>
 
 <style scoped lang="less">
-.el-carousel__item h3 {
-  color: #475669;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-  text-align: center;
-}
 
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
-.lists{
-  width:80%;
-  height: 100%;
-  margin-left:0 ;
-}
 #des{
   background : linear-gradient(to right,rgb(175, 253, 175) ,yellow);
   -webkit-background-clip: text;

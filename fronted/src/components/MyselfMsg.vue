@@ -50,22 +50,7 @@
 <style lang = 'less' scoped>
 
 
-.extitile{
-  margin-top: 20px;
-  height :calc(100% - 60px)
-}
-.outside {
-  border-radius: 30px;
-  width: 750px;
-  height: 680px;
-  overflow: hidden;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0;
-  margin-bottom:0;
 
-
-}
 .rectangle-container {
   width:750px;
   height: 100%;
@@ -81,19 +66,7 @@
     font-weight: bold;
   }
 }
-.innerP{
-  width: 200px;
-  height: 100%;
-  position: relative;
-  & p{
 
-    line-height: 26px;
-    background-clip: text;
-    color: transparent;
-    background: linear-gradient(to right,red, blue);
-    -webkit-background-clip: text;
-  }
-}
 .trapezoid {
   position: absolute;
   width:750px;

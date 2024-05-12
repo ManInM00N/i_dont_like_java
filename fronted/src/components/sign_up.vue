@@ -145,15 +145,6 @@ function TryRegister(){
 
 <style scoped lang="less">
 @import "../assets/style/login_register.less";
-#box2 {
-  width: 500px;
-  height: 600px;
-  background-color: #00000060;
-  margin: auto;
-  margin-top: 5%;
-  text-align: center;
-  border-radius: 10px;
-  padding: 50px 50px;
-  padding-bottom: 0px;
-}
+@import "../assets/style/variable.less";
+
 </style>
