@@ -75,6 +75,7 @@ func (a *Send) TableName() string { return "send" }
 func DBInit() {
 	var err error
 	var DSN = fmt.Sprintf(dsn, binary.Setting.Sqlusername, binary.Setting.Sqlpassword, binary.Setting.Sqlport, binary.Setting.Sqlbase)
+	binary.InfoLog.Println(DSN)
 	db, err = gorm.Open(sqlserver.Open(DSN), &gorm.Config{})
 	if err != nil {
 		binary.DebugLog.Fatalln(err)

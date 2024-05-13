@@ -9,12 +9,12 @@ import (
 var Setting Config
 
 type Config struct {
-	UseRedis    bool   `yml:"use_redis"`
-	RedisPort   string `yml:"redisport"`
-	Sqlusername string `yml:"sqlusername"`
-	Sqlpassword string `yml:"sqlpassword"`
-	Sqlport     string `yml:"sqlport"`
-	Sqlbase     string `yml:"sqlbase"`
+	UseRedis    bool   `yaml:"use_redis"`
+	RedisPort   string `yaml:"redisport"`
+	Sqlusername string `yaml:"sqlusername"`
+	Sqlpassword string `yaml:"sqlpassword"`
+	Sqlport     string `yaml:"sqlport"`
+	Sqlbase     string `yaml:"sqlbase"`
 }
 
 func (c *Config) Msg() {
@@ -22,7 +22,11 @@ func (c *Config) Msg() {
 }
 func ConfigInit() {
 
-	ymlfile, _ := os.OpenFile("settings.yml", os.O_RDWR, 0644)
+	ymlfile, err := os.OpenFile("backed/config.yml", os.O_RDWR, 0644)
+	if err != nil {
+		println(err.Error())
+		os.Exit(20)
+	}
 	defer ymlfile.Close()
 	bytevalue, _ := ioutil.ReadAll(ymlfile)
 	yaml.Unmarshal(bytevalue, &Setting)

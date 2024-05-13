@@ -42,6 +42,7 @@ func Login(c *gin.Context) {
 			"code":    500,
 			"message": "账号或密码错误",
 		})
+		return
 	}
 	isPassword := bcrypt.CompareHashAndPassword([]byte(is.Password), []byte(data["password"].(string)))
 	if isPassword != nil {
